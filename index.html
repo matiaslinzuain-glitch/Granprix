@@ -671,7 +671,7 @@ input, select { font-family: inherit; }
 
 /* ── Product card images ─────────────────────────────────────────────────── */
 .product-card-img img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
+  width: 100%; height: 100%; object-fit: contain; background: #1a1a1a; display: block;
   transition: transform 0.5s ease;
 }
 .product-card:hover .product-card-img img { transform: scale(1.05); }
@@ -2040,12 +2040,12 @@ function renderDetalle_spa(id) {
     for (var i=0; i<4; i++) thumbsHTML += '<div class="gallery-thumb"><div class="placeholder-img" style="height:100%"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="0.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6v14h12V6M3 6l3-3 3 3M18 6l3-3-3-3"/></svg></div></div>';
   } else {
     allImgs.forEach(function(src, i) {
-      thumbsHTML += '<div class="gallery-thumb' + (i===0?" active-thumb":"") + '" onclick="detSwitchImg(this)" data-src="' + src + '" style="cursor:pointer;' + (i===0?"border-color:var(--gold);":"") + '"><img src="' + src + '" style="width:100%;height:100%;object-fit:cover;"></div>';
+      thumbsHTML += '<div class="gallery-thumb' + (i===0?" active-thumb":"") + '" onclick="detSwitchImg(this)" data-src="' + src + '" style="cursor:pointer;' + (i===0?"border-color:var(--gold);":"") + '"><img src="' + src + '" style="width:100%;height:100%;object-fit:contain;background:#1a1a1a;"></div>';
     });
   }
 
   var mainImgHTML = p.imagen
-    ? '<img src="' + p.imagen + '" id="gallery-main-img" style="width:100%;height:100%;object-fit:cover;">'
+    ? '<img src="' + p.imagen + '" id="gallery-main-img" style="width:100%;height:100%;object-fit:contain;background:#1a1a1a;">'
     : '<div class="placeholder-img" style="height:100%"><svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="0.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6v14h12V6M3 6l3-3 3 3M18 6l3-3-3-3"/></svg><span>' + p.nombre + '</span></div>';
 
   var related = getRelated(p, 4);
@@ -2055,7 +2055,7 @@ function renderDetalle_spa(id) {
       var rb = r.badge ? '<span class="product-badge badge-' + r.badge + '">' + r.badge + '</span>' : "";
       var ro = r.precioAnterior ? '<span class="product-price-old">' + formatPrice(r.precioAnterior) + '</span>' : "";
       var rimg = r.imagen
-        ? '<img src="' + r.imagen + '" alt="' + r.nombre + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;">'
+        ? '<img src="' + r.imagen + '" alt="' + r.nombre + '" loading="lazy" style="width:100%;height:100%;object-fit:contain;background:#1a1a1a;">'
         : '<div class="placeholder-img"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="0.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6v14h12V6M3 6l3-3 3 3M18 6l3-3-3-3"/></svg><span>' + r.nombre + '</span></div>';
       return '<a href="#/producto/' + r.id + '" class="product-card">' +
         '<div class="product-card-img">' + rimg + rb +
