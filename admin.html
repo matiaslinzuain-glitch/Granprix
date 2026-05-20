@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gran Prix — Panel de Administración</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0a0a0a; --surface: #111; --s2: #1a1a1a; --s3: #222;
+      --border: #2a2a2a; --gold: #d4a853; --gold-l: #e8c47a;
+      --white: #fff; --gray: #9a9a9a; --muted: #555; --red: #e53a1e;
+    }
+    body { background: var(--black); color: var(--white); font-family: 'Outfit', sans-serif; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; font-family: inherit; }
+    input, select, textarea { font-family: inherit; }
+
+    /* ── Header ── */
+    .header {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-logo { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; color: var(--gold); }
+    .header-sub { font-size: .8rem; color: var(--gray); margin-top: .1rem; }
+    .btn-export {
+      background: var(--gold); color: var(--black); border: none; padding: .65rem 1.4rem;
+      font-weight: 700; font-size: .9rem; letter-spacing: 1px; cursor: pointer;
+      transition: background .2s;
+    }
+    .btn-export:hover { background: var(--gold-l); }
+    .server-status {
+      font-size: .75rem; padding: .3rem .8rem; font-weight: 600;
+      margin-right: .75rem; letter-spacing: .5px;
+    }
+    .status-ok  { background: #1a3a1a; color: #4caf50; border: 1px solid #4caf50; }
+    .status-err { background: #3a1a1a; color: #f44336; border: 1px solid #f44336; }
+
+    /* ── Layout ── */
+    .layout { display: grid; grid-template-columns: 1fr 400px; gap: 2rem; padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+    /* ── Panel izquierdo: lista ── */
+    .panel-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .btn-add {
+      background: var(--gold); color: var(--black); padding: .5rem 1.1rem;
+      font-weight: 700; font-size: .82rem; letter-spacing: .5px; cursor: pointer;
+    }
+    .btn-add:hover { background: var(--gold-l); }
+
+    .search-bar {
+      width: 100%; background: var(--s2); border: 1px solid var(--border); color: var(--white);
+      padding: .65rem 1rem; font-size: .9rem; margin-bottom: 1rem;
+    }
+    .search-bar::placeholder { color: var(--muted); }
+    .search-bar:focus { outline: none; border-color: var(--gold); }
+
+    .cat-filter { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .cat-btn {
+      background: var(--s2); border: 1px solid var(--border); color: var(--gray);
+      padding: .4rem .9rem; font-size: .8rem; cursor: pointer; transition: all .2s;
+    }
+    .cat-btn.active, .cat-btn:hover { background: var(--gold); border-color: var(--gold); color: var(--black); font-weight: 600; }
+
+    .product-list { display: flex; flex-direction: column; gap: .75rem; }
+    .product-row {
+      background: var(--s2); border: 1px solid var(--border); padding: 1rem;
+      display: grid; grid-template-columns: 60px 1fr auto; gap: 1rem; align-items: center;
+      cursor: pointer; transition: border-color .2s;
+    }
+    .product-row:hover { border-color: var(--gold); }
+    .product-row.selected { border-color: var(--gold); background: #1e1a10; }
+    .product-thumb {
+      width: 60px; height: 60px; object-fit: cover; background: var(--s3);
+      display: flex; align-items: center; justify-content: center; font-size: .65rem; color: var(--muted);
+      flex-shrink: 0; overflow: hidden;
+    }
+    .product-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .product-info { min-width: 0; }
+    .product-name { font-weight: 600; font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .product-meta { font-size: .78rem; color: var(--gray); margin-top: .25rem; }
+    .product-price { font-weight: 700; color: var(--gold); font-size: .9rem; white-space: nowrap; }
+    .badge {
+      display: inline-block; font-size: .65rem; font-weight: 700; padding: .15rem .45rem;
+      letter-spacing: .5px; margin-left: .4rem; vertical-align: middle;
+    }
+    .badge-nuevo { background: var(--gold); color: var(--black); }
+    .badge-oferta { background: var(--red); color: var(--white); }
+    .row-actions { display: flex; gap: .4rem; }
+    .btn-icon {
+      background: var(--s3); border: 1px solid var(--border); color: var(--gray);
+      padding: .35rem .6rem; font-size: .8rem; cursor: pointer; transition: all .2s;
+    }
+    .btn-icon:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-icon.del:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── Panel derecho: formulario ── */
+    .form-panel { background: var(--s2); border: 1px solid var(--border); padding: 1.5rem; height: fit-content; position: sticky; top: 80px; }
+    .form-title { font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--gold); border-bottom: 1px solid var(--border); padding-bottom: .75rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-full { grid-column: 1 / -1; }
+    .form-group { display: flex; flex-direction: column; gap: .4rem; }
+    label { font-size: .78rem; color: var(--gray); font-weight: 500; letter-spacing: .3px; }
+    input[type="text"], input[type="number"], select, textarea {
+      background: var(--s3); border: 1px solid var(--border); color: var(--white);
+      padding: .6rem .8rem; font-size: .88rem; width: 100%;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); }
+    select option { background: var(--s3); }
+    textarea { resize: vertical; min-height: 70px; }
+
+    .img-upload-area {
+      border: 2px dashed var(--border); padding: 1.2rem; text-align: center;
+      cursor: pointer; transition: border-color .2s; position: relative;
+    }
+    .img-upload-area:hover { border-color: var(--gold); }
+    .img-upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+    .img-preview { width: 100%; max-height: 140px; object-fit: contain; margin-top: .75rem; display: none; }
+    .img-upload-label { font-size: .82rem; color: var(--muted); }
+    .img-upload-label span { color: var(--gold); }
+
+    .talles-input { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .4rem; }
+    .talle-check { display: none; }
+    .talle-label {
+      background: var(--s3); border: 1px solid var(--border); padding: .3rem .7rem;
+      font-size: .8rem; cursor: pointer; transition: all .2s; user-select: none;
+    }
+    .talle-check:checked + .talle-label { background: var(--gold); border-color: var(--gold); color: var(--black); font-weight: 600; }
+
+    .form-actions { display: flex; gap: .75rem; margin-top: 1.5rem; }
+    .btn-save {
+      flex: 1; background: var(--gold); color: var(--black); padding: .75rem;
+      font-weight: 700; font-size: .9rem; letter-spacing: .5px; cursor: pointer; transition: background .2s;
+    }
+    .btn-save:hover { background: var(--gold-l); }
+    .btn-cancel {
+      background: var(--s3); border: 1px solid var(--border); color: var(--gray);
+      padding: .75rem 1.2rem; font-size: .9rem; cursor: pointer; transition: all .2s;
+    }
+    .btn-cancel:hover { border-color: var(--muted); color: var(--white); }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: var(--black); padding: .75rem 1.8rem;
+      font-weight: 700; font-size: .9rem; z-index: 9999; opacity: 0;
+      transition: opacity .3s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+
+    /* ── Empty ── */
+    .empty { text-align: center; padding: 3rem; color: var(--muted); font-size: .9rem; }
+    .counter { font-size: .8rem; color: var(--muted); font-weight: 400; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">GRAN PRIX</div>
+    <div class="header-sub">Panel de administración de productos</div>
+  </div>
+  <span class="server-status" id="server-status"></span>
+  <button class="btn-export" onclick="guardarCambios()">💾 Guardar cambios</button>
+</div>
+
+<div class="layout">
+
+  <!-- Lista de productos -->
+  <div>
+    <div class="panel-title">
+      <span>Productos <span class="counter" id="counter"></span></span>
+      <button class="btn-add" onclick="newProduct()">+ Agregar producto</button>
+    </div>
+
+    <input class="search-bar" type="text" id="search" placeholder="Buscar por nombre..." oninput="renderList()" />
+
+    <div class="cat-filter">
+      <button class="cat-btn active" data-cat="todo" onclick="filterCat(this)">Todo</button>
+      <button class="cat-btn" data-cat="remeras" onclick="filterCat(this)">Remeras</button>
+      <button class="cat-btn" data-cat="pantalones" onclick="filterCat(this)">Pantalones</button>
+      <button class="cat-btn" data-cat="buzos" onclick="filterCat(this)">Buzos</button>
+      <button class="cat-btn" data-cat="camperas" onclick="filterCat(this)">Camperas</button>
+    </div>
+
+    <div class="product-list" id="product-list"></div>
+  </div>
+
+  <!-- Formulario -->
+  <div class="form-panel">
+    <div class="form-title" id="form-title">Seleccioná un producto para editar</div>
+
+    <div class="form-grid" id="form-fields" style="display:none">
+
+      <div class="form-group">
+        <label>NOMBRE DEL PRODUCTO</label>
+        <input type="text" id="f-nombre" placeholder="Ej: Remera Recto Básica" />
+      </div>
+      <div class="form-group">
+        <label>CATEGORÍA</label>
+        <select id="f-categoria">
+          <option value="remeras">Remeras</option>
+          <option value="pantalones">Pantalones</option>
+          <option value="buzos">Buzos</option>
+          <option value="camperas">Camperas</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>PRECIO ($)</label>
+        <input type="number" id="f-precio" placeholder="18000" />
+      </div>
+      <div class="form-group">
+        <label>PRECIO ANTERIOR — tachado (opcional)</label>
+        <input type="number" id="f-precioAnterior" placeholder="Dejar vacío si no hay" />
+      </div>
+
+      <div class="form-group form-full">
+        <label>BADGE</label>
+        <select id="f-badge">
+          <option value="">Sin badge</option>
+          <option value="nuevo">Nuevo</option>
+          <option value="oferta">Oferta</option>
+        </select>
+      </div>
+
+      <div class="form-group form-full">
+        <label>TALLES DISPONIBLES</label>
+        <div class="talles-input" id="talles-container"></div>
+      </div>
+
+      <div class="form-group form-full">
+        <label>COLORES (separados por coma)</label>
+        <input type="text" id="f-colores" placeholder="Negro, Blanco, Gris" />
+      </div>
+
+      <div class="form-group form-full">
+        <label>FOTO PRINCIPAL</label>
+        <div class="img-upload-area" id="upload-area">
+          <input type="file" id="f-imagen" accept="image/*" onchange="handleImage(this)" />
+          <div class="img-upload-label">Hacé clic o arrastrá una imagen<br><span>JPG, PNG, WEBP</span></div>
+          <img class="img-preview" id="img-preview" />
+        </div>
+        <input type="text" id="f-imagen-name" placeholder="O escribí el nombre: img/foto.jpeg" style="margin-top:.5rem" />
+      </div>
+
+      <div class="form-group form-full">
+        <label>DESCRIPCIÓN</label>
+        <textarea id="f-descripcion" placeholder="Descripción del producto..."></textarea>
+      </div>
+
+      <div class="form-actions form-full">
+        <button class="btn-cancel" onclick="cancelEdit()">Cancelar</button>
+        <button class="btn-save" onclick="saveProduct()">Guardar producto</button>
+      </div>
+    </div>
+
+    <div id="form-placeholder" style="color:var(--muted);font-size:.85rem;margin-top:1rem">
+      Hacé clic en un producto de la lista para editarlo, o tocá <strong style="color:var(--gold)">+ Agregar producto</strong> para crear uno nuevo.
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Cargar productos desde index.html via servidor, o usar los de data.js como fallback
+</script>
+<script src="js/data.js"></script>
+<script>
+// ── Estado ──────────────────────────────────────────────────────────────────
+let productos = JSON.parse(JSON.stringify(PRODUCTOS)); // copia local
+let editingId = null;
+let activeCat = "todo";
+let currentImageB64 = null;
+
+const TALLES_ROPA  = ["XS","S","M","L","XL","XXL","XXXL"];
+const TALLES_JEAN  = ["28","30","32","34","36","38","40","42","44","46","48","50","52","54"];
+
+// ── Render lista ─────────────────────────────────────────────────────────────
+function renderList() {
+  const q    = document.getElementById("search").value.toLowerCase();
+  const list = document.getElementById("product-list");
+  let items  = productos.filter(p => {
+    const matchCat  = activeCat === "todo" || p.categoria === activeCat;
+    const matchText = !q || p.nombre.toLowerCase().includes(q);
+    return matchCat && matchText;
+  });
+
+  document.getElementById("counter").textContent = `(${items.length} de ${productos.length})`;
+
+  if (items.length === 0) {
+    list.innerHTML = '<div class="empty">No se encontraron productos</div>';
+    return;
+  }
+
+  list.innerHTML = items.map(p => {
+    const thumbHTML = p.imagen && !p.imagen.startsWith("img/")
+      ? `<div class="product-thumb"><img src="${p.imagen}" /></div>`
+      : p.imagen
+        ? `<div class="product-thumb"><img src="${p.imagen}" onerror="this.style.display='none'" /></div>`
+        : `<div class="product-thumb">Sin foto</div>`;
+
+    const badgeHTML = p.badge ? `<span class="badge badge-${p.badge}">${p.badge}</span>` : "";
+    const selected  = editingId === p.id ? " selected" : "";
+
+    return `
+      <div class="product-row${selected}" onclick="editProduct('${p.id}')">
+        ${thumbHTML}
+        <div class="product-info">
+          <div class="product-name">${p.nombre}${badgeHTML}</div>
+          <div class="product-meta">${capitalize(p.categoria)} · talles: ${p.talles.join(", ")}</div>
+        </div>
+        <div>
+          <div class="product-price">$${p.precio.toLocaleString("es-AR")}</div>
+          <div class="row-actions" style="margin-top:.4rem">
+            <button class="btn-icon del" onclick="event.stopPropagation();deleteProduct('${p.id}')" title="Eliminar">🗑</button>
+          </div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function filterCat(btn) {
+  document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  activeCat = btn.dataset.cat;
+  renderList();
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// ── Formulario ───────────────────────────────────────────────────────────────
+function showForm(title) {
+  document.getElementById("form-title").textContent = title;
+  document.getElementById("form-fields").style.display = "grid";
+  document.getElementById("form-placeholder").style.display = "none";
+}
+
+function hideForm() {
+  document.getElementById("form-fields").style.display = "none";
+  document.getElementById("form-placeholder").style.display = "block";
+  document.getElementById("form-title").textContent = "Seleccioná un producto para editar";
+  editingId = null;
+  renderList();
+}
+
+function buildTallesUI(selected) {
+  const cat = document.getElementById("f-categoria").value;
+  const talles = (cat === "pantalones") ? TALLES_JEAN : TALLES_ROPA;
+  const container = document.getElementById("talles-container");
+  container.innerHTML = talles.map(t => `
+    <input class="talle-check" type="checkbox" id="t-${t}" value="${t}" ${selected.includes(t) ? "checked" : ""}>
+    <label class="talle-label" for="t-${t}">${t}</label>
+  `).join("");
+}
+
+document.addEventListener("change", e => {
+  if (e.target.id === "f-categoria") {
+    buildTallesUI([]);
+  }
+});
+
+function getSelectedTalles() {
+  return Array.from(document.querySelectorAll(".talle-check:checked")).map(c => c.value);
+}
+
+function newProduct() {
+  editingId = null;
+  currentImageB64 = null;
+  showForm("➕ Nuevo producto");
+  document.getElementById("f-nombre").value = "";
+  document.getElementById("f-categoria").value = "remeras";
+  document.getElementById("f-precio").value = "";
+  document.getElementById("f-precioAnterior").value = "";
+  document.getElementById("f-badge").value = "";
+  document.getElementById("f-colores").value = "";
+  document.getElementById("f-descripcion").value = "";
+  document.getElementById("f-imagen-name").value = "";
+  document.getElementById("img-preview").style.display = "none";
+  document.getElementById("img-preview").src = "";
+  buildTallesUI([]);
+  renderList();
+}
+
+function editProduct(id) {
+  const p = productos.find(x => x.id === id);
+  if (!p) return;
+  editingId = id;
+  currentImageB64 = p.imagen && p.imagen.startsWith("data:") ? p.imagen : null;
+  showForm("✏️ Editar: " + p.nombre);
+  document.getElementById("f-nombre").value = p.nombre;
+  document.getElementById("f-categoria").value = p.categoria;
+  document.getElementById("f-precio").value = p.precio;
+  document.getElementById("f-precioAnterior").value = p.precioAnterior || "";
+  document.getElementById("f-badge").value = p.badge || "";
+  document.getElementById("f-colores").value = (p.colores || []).join(", ");
+  document.getElementById("f-descripcion").value = p.descripcion || "";
+  document.getElementById("f-imagen-name").value = (!p.imagen || p.imagen.startsWith("data:")) ? "" : p.imagen;
+
+  const preview = document.getElementById("img-preview");
+  if (p.imagen) {
+    preview.src = p.imagen;
+    preview.style.display = "block";
+  } else {
+    preview.style.display = "none";
+  }
+
+  buildTallesUI(p.talles || []);
+  renderList();
+}
+
+function cancelEdit() { hideForm(); }
+
+function saveProduct() {
+  const nombre = document.getElementById("f-nombre").value.trim();
+  if (!nombre) { showToast("⚠ Poné un nombre al producto"); return; }
+  const precio = parseInt(document.getElementById("f-precio").value);
+  if (!precio) { showToast("⚠ Poné un precio válido"); return; }
+
+  const talles = getSelectedTalles();
+  if (!talles.length) { showToast("⚠ Seleccioná al menos un talle"); return; }
+
+  const precioAnt = parseInt(document.getElementById("f-precioAnterior").value) || null;
+  const imagenName = document.getElementById("f-imagen-name").value.trim();
+  const imagen = currentImageB64 || imagenName || null;
+
+  const data = {
+    nombre,
+    categoria: document.getElementById("f-categoria").value,
+    precio,
+    precioAnterior: precioAnt,
+    talles,
+    colores: document.getElementById("f-colores").value.split(",").map(s => s.trim()).filter(Boolean),
+    badge: document.getElementById("f-badge").value || null,
+    imagen,
+    galeria: [],
+    descripcion: document.getElementById("f-descripcion").value.trim()
+  };
+
+  if (editingId) {
+    const idx = productos.findIndex(p => p.id === editingId);
+    if (idx !== -1) productos[idx] = { ...productos[idx], ...data };
+    showToast("✅ Producto actualizado");
+  } else {
+    const maxId = productos.reduce((m, p) => Math.max(m, parseInt(p.id)), 0);
+    data.id = String(maxId + 1).padStart(3, "0");
+    productos.push(data);
+    showToast("✅ Producto agregado");
+  }
+
+  hideForm();
+  renderList();
+}
+
+function deleteProduct(id) {
+  const p = productos.find(x => x.id === id);
+  if (!confirm(`¿Eliminar "${p?.nombre}"?`)) return;
+  productos = productos.filter(x => x.id !== id);
+  if (editingId === id) hideForm();
+  renderList();
+  showToast("🗑 Producto eliminado");
+}
+
+// ── Imagen ───────────────────────────────────────────────────────────────────
+function handleImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    currentImageB64 = e.target.result;
+    const preview = document.getElementById("img-preview");
+    preview.src = currentImageB64;
+    preview.style.display = "block";
+    document.getElementById("f-imagen-name").value = "";
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── Guardar directo en data.js via servidor ───────────────────────────────────
+async function guardarCambios() {
+  try {
+    const res = await fetch("http://localhost:3333/guardar-productos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productos })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      showToast("✅ ¡Guardado! Los cambios ya están en la página.");
+      setStatus(true);
+    } else {
+      throw new Error(data.error);
+    }
+  } catch (e) {
+    showToast("⚠ Error al guardar. ¿Está corriendo el servidor?");
+    setStatus(false);
+    console.error(e);
+  }
+}
+
+function setStatus(ok) {
+  const el = document.getElementById("server-status");
+  el.textContent = ok ? "● Conectado" : "● Sin servidor";
+  el.className = "server-status " + (ok ? "status-ok" : "status-err");
+}
+
+// Verificar conexión al servidor al cargar
+async function checkServer() {
+  try {
+    await fetch("http://localhost:3333/js/data.js", { method: "HEAD" });
+    setStatus(true);
+  } catch {
+    setStatus(false);
+  }
+}
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+renderList();
+checkServer();
+</script>
+</body>
+</html>

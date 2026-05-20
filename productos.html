@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Productos — Gran Prix</title>
+  <meta name="description" content="Explorá toda la colección de ropa masculina premium de Gran Prix." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <a href="index.html" class="navbar-logo">
+          <img src="img/logo.svg" alt="Grand Prix Indumentaria Masculina" />
+        </a>
+        <ul class="navbar-links">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="productos.html" class="active">Productos</a></li>
+          <li><a href="novedades.html">Novedades</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+        <div class="navbar-right">
+          <button class="cart-btn" onclick="Cart.open()" aria-label="Carrito">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+            </svg>
+            <span id="cart-badge">0</span>
+          </button>
+          <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menú">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+      <div class="mobile-menu" id="mobile-menu">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="novedades.html">Novedades</a>
+        <a href="contacto.html">Contacto</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <p class="section-eyebrow">Toda la colección</p>
+      <h1 class="section-title font-display" style="font-size:clamp(3rem,8vw,5rem)">PRODUCTOS</h1>
+    </div>
+  </div>
+
+  <!-- GRILLA -->
+  <section class="section">
+    <div class="container">
+      <div class="filter-bar">
+        <div class="filter-btns" id="prod-filters">
+          <button class="filter-btn active" data-cat="todo">Todo</button>
+          <button class="filter-btn" data-cat="camisas">Camisas</button>
+          <button class="filter-btn" data-cat="pantalones">Pantalones</button>
+          <button class="filter-btn" data-cat="buzos">Buzos</button>
+          <button class="filter-btn" data-cat="camperas">Camperas</button>
+        </div>
+        <select class="sort-select" id="prod-sort">
+          <option value="default">Ordenar</option>
+          <option value="precio-asc">Menor precio</option>
+          <option value="precio-desc">Mayor precio</option>
+          <option value="nuevo">Más nuevos</option>
+        </select>
+      </div>
+      <div class="product-grid" id="prod-grid"></div>
+      <div class="no-results" id="no-results" style="display:none">No hay productos en esta categoría</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="footer-logo">GRAN PRIX</a>
+          <p class="footer-desc">Ropa masculina premium en Liniers, CABA. Estilo, calidad y precio justo.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Instagram"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h3 class="footer-heading">Navegación</h3>
+          <ul class="footer-links">
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="productos.html">Productos</a></li>
+            <li><a href="novedades.html">Novedades</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer-heading">Información</h3>
+          <ul class="footer-links">
+            <li><a href="contacto.html">Política de cambios</a></li>
+            <li><a href="contacto.html">Cómo comprar</a></li>
+            <li><a href="contacto.html">Pickup en local</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer-heading">Contacto</h3>
+          <div class="footer-contact">
+            <div class="footer-contact-row">
+              <svg class="footer-contact-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <p class="footer-contact-text">Rivadavia 11450, Local 4<br>Liniers, CABA</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">© <span id="year"></span> Gran Prix. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById("hamburger").classList.toggle("open");
+      document.getElementById("mobile-menu").classList.toggle("open");
+    }
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Leer categoría desde URL (?categoria=remeras)
+    const urlCat = new URLSearchParams(window.location.search).get("categoria") || "todo";
+    let activeCat = urlCat;
+    let activeSort = "default";
+
+    function renderGrid() {
+      let items = activeCat === "todo" ? [...PRODUCTOS] : PRODUCTOS.filter(p => p.categoria === activeCat);
+      if (activeSort === "precio-asc") items.sort((a,b) => a.precio - b.precio);
+      if (activeSort === "precio-desc") items.sort((a,b) => b.precio - a.precio);
+      if (activeSort === "nuevo") items.sort(a => a.badge === "nuevo" ? -1 : 1);
+      const grid = document.getElementById("prod-grid");
+      const noRes = document.getElementById("no-results");
+      if (items.length === 0) { grid.innerHTML = ""; noRes.style.display = "block"; return; }
+      noRes.style.display = "none";
+      grid.innerHTML = items.map(p => productCardHTML(p)).join("");
+    }
+
+    function productCardHTML(p) {
+      const badge = p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge}</span>` : "";
+      const oldPrice = p.precioAnterior ? `<span class="product-price-old">${formatPrice(p.precioAnterior)}</span>` : "";
+      const talles = p.talles.slice(0,4).map(t => `<span class="talle-tag">${t}</span>`).join("") + (p.talles.length > 4 ? `<span class="talle-tag">+${p.talles.length-4}</span>` : "");
+      const imgHTML = p.imagen
+        ? `<img src="${p.imagen}" alt="${p.nombre}" loading="lazy">`
+        : `<div class="placeholder-img"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="0.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6v14h12V6M3 6l3-3 3 3M18 6l3-3-3-3"/></svg><span>${p.nombre}</span></div>`;
+      return `
+        <a href="producto.html?id=${p.id}" class="product-card">
+          <div class="product-card-img">
+            ${imgHTML}
+            ${badge}
+            <button class="add-btn" onclick="event.preventDefault();Cart.add(PRODUCTOS.find(x=>x.id==='${p.id}'),'${p.talles[0]}')" aria-label="Agregar">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+            </button>
+          </div>
+          <div class="product-card-body">
+            <p class="product-cat">${p.categoria}</p>
+            <p class="product-name">${p.nombre}</p>
+            <div class="product-talles">${talles}</div>
+            <div class="product-prices">
+              <span class="product-price">${formatPrice(p.precio)}</span>
+              ${oldPrice}
+            </div>
+          </div>
+        </a>`;
+    }
+
+    // Filtros
+    const filterBtns = document.querySelectorAll("#prod-filters .filter-btn");
+    filterBtns.forEach(btn => {
+      if (btn.dataset.cat === activeCat) btn.classList.add("active");
+      else btn.classList.remove("active");
+      btn.addEventListener("click", () => {
+        activeCat = btn.dataset.cat;
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderGrid();
+      });
+    });
+
+    document.getElementById("prod-sort").addEventListener("change", e => {
+      activeSort = e.target.value;
+      renderGrid();
+    });
+
+    function addRipple(e) {
+      const el = e.currentTarget;
+      const rect = el.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      const wave = document.createElement("span");
+      wave.className = "ripple-wave";
+      wave.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+      el.appendChild(wave);
+      setTimeout(() => wave.remove(), 600);
+    }
+    document.querySelectorAll(".btn-gold,.btn-outline,.filter-btn,.cart-btn").forEach(el => el.addEventListener("click", addRipple));
+    document.getElementById("prod-grid").addEventListener("click", e => {
+      const btn = e.target.closest(".add-btn");
+      if (btn) addRipple({ currentTarget: btn, clientX: e.clientX, clientY: e.clientY });
+    });
+
+    injectCartDrawer();
+    renderGrid();
+  </script>
+</body>
+</html>

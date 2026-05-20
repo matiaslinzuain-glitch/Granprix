@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 230" fill="none" role="img" aria-label="Grand Prix logo">
+
+  <defs>
+    <!-- Clip: solo el área del anillo (entre radio interno y externo) -->
+    <clipPath id="ring-area">
+      <path fill-rule="evenodd"
+        d="M160 10 a105 105 0 1 1 0 210 a105 105 0 1 1 0-210z
+           M160 72 a43 43 0 1 0 0 86 a43 43 0 1 0 0-86z"/>
+    </clipPath>
+    <!-- Clip: cuadrante superior-derecho del anillo -->
+    <clipPath id="checker-clip">
+      <rect x="160" y="10" width="110" height="105"/>
+    </clipPath>
+  </defs>
+
+  <!-- ── Anillo rojo ─────────────────────────────────── -->
+  <circle cx="160" cy="115" r="105" fill="#E53A1E"/>
+  <!-- agujero interior -->
+  <circle cx="160" cy="115" r="68"  fill="#0a0a0a"/>
+
+  <!-- ── Patrón ajedrez (superior-derecho) ──────────── -->
+  <!-- Fondo gris claro detrás del tablero -->
+  <rect x="162" y="12" width="101" height="103" fill="#cccccc" clip-path="url(#ring-area)"/>
+  <!-- Cuadros blancos del tablero -->
+  <g clip-path="url(#ring-area)" fill="white">
+    <!-- Fila 0 (y=12) -->
+    <rect x="162" y="12"  width="17" height="17"/>
+    <rect x="196" y="12"  width="17" height="17"/>
+    <rect x="230" y="12"  width="17" height="17"/>
+    <!-- Fila 1 (y=29) -->
+    <rect x="179" y="29"  width="17" height="17"/>
+    <rect x="213" y="29"  width="17" height="17"/>
+    <rect x="247" y="29"  width="17" height="17"/>
+    <!-- Fila 2 (y=46) -->
+    <rect x="162" y="46"  width="17" height="17"/>
+    <rect x="196" y="46"  width="17" height="17"/>
+    <rect x="230" y="46"  width="17" height="17"/>
+    <!-- Fila 3 (y=63) -->
+    <rect x="179" y="63"  width="17" height="17"/>
+    <rect x="213" y="63"  width="17" height="17"/>
+    <rect x="247" y="63"  width="17" height="17"/>
+    <!-- Fila 4 (y=80) -->
+    <rect x="162" y="80"  width="17" height="17"/>
+    <rect x="196" y="80"  width="17" height="17"/>
+    <rect x="230" y="80"  width="17" height="17"/>
+    <!-- Fila 5 (y=97) -->
+    <rect x="179" y="97"  width="17" height="17"/>
+    <rect x="213" y="97"  width="17" height="17"/>
+  </g>
+  <!-- Cuadros grises del tablero (color alternado) -->
+  <g clip-path="url(#ring-area)" fill="#888888">
+    <!-- Fila 0 -->
+    <rect x="179" y="12"  width="17" height="17"/>
+    <rect x="213" y="12"  width="17" height="17"/>
+    <rect x="247" y="12"  width="17" height="17"/>
+    <!-- Fila 1 -->
+    <rect x="162" y="29"  width="17" height="17"/>
+    <rect x="196" y="29"  width="17" height="17"/>
+    <rect x="230" y="29"  width="17" height="17"/>
+    <!-- Fila 2 -->
+    <rect x="179" y="46"  width="17" height="17"/>
+    <rect x="213" y="46"  width="17" height="17"/>
+    <rect x="247" y="46"  width="17" height="17"/>
+    <!-- Fila 3 -->
+    <rect x="162" y="63"  width="17" height="17"/>
+    <rect x="196" y="63"  width="17" height="17"/>
+    <rect x="230" y="63"  width="17" height="17"/>
+    <!-- Fila 4 -->
+    <rect x="179" y="80"  width="17" height="17"/>
+    <rect x="213" y="80"  width="17" height="17"/>
+    <!-- Fila 5 -->
+    <rect x="162" y="97"  width="17" height="17"/>
+    <rect x="196" y="97"  width="17" height="17"/>
+  </g>
+
+  <!-- ── Banda negra horizontal ─────────────────────── -->
+  <rect x="0"   y="86"  width="320" height="58" fill="#111111"/>
+  <!-- Borde dorado sutil arriba y abajo de la banda -->
+  <rect x="0"   y="86"  width="320" height="2"  fill="#d4a853" opacity="0.6"/>
+  <rect x="0"   y="142" width="320" height="2"  fill="#d4a853" opacity="0.6"/>
+
+  <!-- ── Texto GRAND PRIX ───────────────────────────── -->
+  <text
+    x="160" y="131"
+    text-anchor="middle"
+    font-family="'Impact', 'Arial Black', 'Bebas Neue', sans-serif"
+    font-size="46"
+    font-weight="900"
+    letter-spacing="6"
+    fill="white">GRAND PRIX</text>
+
+</svg>
