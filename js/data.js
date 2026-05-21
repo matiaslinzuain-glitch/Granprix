@@ -167,6 +167,32 @@ const PRODUCTOS = [
     imagen: "img/chino-azul-negro-1.jpeg",
     galeria: [],
     descripcion: "Pantalón corte chino disponible en azul y negro. Corte recto, bolsillos laterales. Del talle 38 al 52."
+  },
+  {
+    id: "027",
+    nombre: "Pantalón Náutico Cargo",
+    categoria: "pantalones",
+    precio: 45000,
+    precioAnterior: null,
+    talles: ["38", "40", "42", "44", "46", "48", "50", "52", "54", "56", "58", "60", "62", "64", "66", "68"],
+    colores: ["Varios colores"],
+    badge: "nuevo",
+    imagen: "img/nautico-cargo-1.jpeg",
+    galeria: ["img/nautico-cargo-2.jpeg", "img/nautico-cargo-3.jpeg", "img/nautico-cargo-4.jpeg", "img/nautico-cargo-5.jpeg"],
+    descripcion: "Pantalón náutico cargo con múltiples bolsillos y cintura elástica. Del talle 38 al especial 68."
+  },
+  {
+    id: "028",
+    nombre: "Pantalón Vestir Mecano Tropical",
+    categoria: "pantalones",
+    precio: 50000,
+    precioAnterior: null,
+    talles: ["38", "40", "42", "44", "46", "48", "50", "52", "54", "56", "58", "60"],
+    colores: ["Varios colores"],
+    badge: "nuevo",
+    imagen: "img/mecano-tropical-1.jpeg",
+    galeria: ["img/mecano-tropical-2.jpeg", "img/mecano-tropical-3.jpeg"],
+    descripcion: "Pantalón de vestir mecano tropical. Corte clásico, tela liviana. Del talle 38 al especial 60."
   }
 ];
 

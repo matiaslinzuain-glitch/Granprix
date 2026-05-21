@@ -1,7 +1,7 @@
 // ── Carrito con localStorage ──────────────────────────────────────────────────
 
 const Cart = {
-  WA_NUMBER: "5491100000000", // Reemplazá con tu número real
+  WA_NUMBER: "5491136196053",
 
   get items() {
     try { return JSON.parse(localStorage.getItem("gp_cart") || "[]"); }
