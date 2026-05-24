@@ -203,8 +203,8 @@ const PRODUCTOS = [
     talles: ["S", "M", "L", "XL", "XXL"],
     colores: ["Varios colores"],
     badge: "nuevo",
-    imagen: "img/polera-lana-hilo-1.jpeg",
-    galeria: ["img/polera-lana-hilo-2.jpeg", "img/polera-lana-hilo-3.jpeg", "img/polera-lana-hilo-4.jpeg"],
+    imagen: "img/portada-polera.jpeg",
+    galeria: ["img/polera-lana-hilo-1.jpeg", "img/polera-lana-hilo-2.jpeg", "img/polera-lana-hilo-3.jpeg", "img/polera-lana-hilo-4.jpeg"],
     descripcion: "Polera de lana de hilo, ¡no pica! Suave al tacto, ideal para el frío. Del talle S al XXL."
   },
   {
