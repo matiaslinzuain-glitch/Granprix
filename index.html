@@ -7,13 +7,13 @@
   <meta name="description" content="Tienda de ropa masculina en Rivadavia 11450 local 4, Liniers, CABA." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
   <style>
 /* ── Reset & Base ──────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --black:   #0a0a0a;
+  --black:   #0d0d0d;
   --surface: #111111;
   --s2:      #1a1a1a;
   --s3:      #222222;
@@ -32,7 +32,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--black);
   color: var(--white);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -58,7 +58,8 @@ input, select { font-family: inherit; }
 
 /* ── Layout ──────────────────────────────────────────────────────────────── */
 .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
-.section { padding: 5rem 0; }
+.section { padding: 5rem 0; background: #0d0d0d; }
+.section-alt { padding: 5rem 0; background: #141414; }
 
 /* ── Placeholder imágenes ────────────────────────────────────────────────── */
 .placeholder-img {
@@ -92,7 +93,7 @@ input, select { font-family: inherit; }
   padding: 1rem 2rem;
   transition: background 0.2s;
 }
-.btn-gold:hover { background: var(--gold-l); }
+.btn-gold:hover { background: var(--gold-l); box-shadow: 0 4px 20px rgba(212,168,83,0.30); }
 .btn-outline {
   display: inline-flex;
   align-items: center;
@@ -106,7 +107,7 @@ input, select { font-family: inherit; }
   padding: 1rem 2rem;
   transition: border-color 0.2s, color 0.2s;
 }
-.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); box-shadow: 0 4px 20px rgba(212,168,83,0.20); }
 .btn-block { width: 100%; }
 .btn-link {
   color: var(--gold);
@@ -365,7 +366,10 @@ input, select { font-family: inherit; }
   overflow: hidden;
   display: block;
   background: var(--s2);
+  cursor: pointer;
+  transition: box-shadow 0.3s;
 }
+.cat-card:hover { box-shadow: 0 8px 30px rgba(212,168,83,0.15); }
 .cat-card-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
 .cat-card:hover .cat-card-img { transform: scale(1.05); }
 .cat-overlay {
@@ -410,7 +414,7 @@ input, select { font-family: inherit; }
   background: none;
 }
 .filter-btn:hover { border-color: var(--gold); color: var(--white); }
-.filter-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+.filter-btn.active { background: var(--gold); color: #000; border-color: var(--gold); box-shadow: 0 4px 16px rgba(212,168,83,0.25); }
 .sort-select {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -429,10 +433,11 @@ input, select { font-family: inherit; }
 .product-card {
   background: var(--surface);
   display: block;
-  transition: background 0.3s;
+  transition: background 0.3s, box-shadow 0.3s;
   position: relative;
+  cursor: pointer;
 }
-.product-card:hover { background: #161616; }
+.product-card:hover { background: #161616; box-shadow: 0 8px 30px rgba(212,168,83,0.12); }
 .product-card-img {
   position: relative;
   aspect-ratio: 3/4;
@@ -458,7 +463,7 @@ input, select { font-family: inherit; }
   transform: translateY(6px);
   transition: opacity 0.2s, transform 0.2s, background 0.2s;
 }
-.add-btn:hover { background: var(--gold-l); }
+.add-btn:hover { background: var(--gold-l); box-shadow: 0 4px 16px rgba(212,168,83,0.35); }
 .product-card:hover .add-btn { opacity: 1; transform: translateY(0); }
 .product-card-body { padding: 1rem; }
 .product-cat { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
@@ -524,6 +529,7 @@ input, select { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   color: var(--muted);
   transition: border-color 0.2s, color 0.2s;
+  cursor: pointer;
 }
 .social-link:hover { border-color: var(--gold); color: var(--gold); }
 .footer-heading { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); margin-bottom: 1.25rem; }
@@ -651,7 +657,8 @@ input, select { font-family: inherit; }
 
 /* ── Contacto ────────────────────────────────────────────────────────────── */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-.contact-card { background: var(--surface); border: 1px solid var(--border); padding: 2rem; margin-bottom: 1.5rem; }
+.contact-card { background: var(--surface); border: 1px solid var(--border); padding: 2rem; margin-bottom: 1.5rem; transition: box-shadow 0.3s; }
+.contact-card:hover { box-shadow: 0 8px 30px rgba(212,168,83,0.10); }
 .contact-card:last-child { margin-bottom: 0; }
 .contact-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.75rem; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
 .map-placeholder { width: 100%; height: 180px; background: var(--s2); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1.25rem; }
@@ -678,7 +685,7 @@ input, select { font-family: inherit; }
 
 /* ── Ripple effect ───────────────────────────────────────────────────────── */
 .btn-gold, .btn-outline, .btn-dark, .filter-btn, .add-btn, .cart-btn,
-.talle-btn, .btn-wa-big, .menu-tab { position: relative; overflow: hidden; }
+.talle-btn, .btn-wa-big, .menu-tab { position: relative; overflow: hidden; user-select: none; }
 .ripple-wave {
   position: absolute; border-radius: 50%; pointer-events: none;
   transform: scale(0);
@@ -952,7 +959,7 @@ input, select { font-family: inherit; }
   </section>
 
   <!-- PRODUCTOS DESTACADOS -->
-  <section class="section" id="section-productos" style="padding-top:0">
+  <section class="section" id="section-productos" class="section-alt" style="padding-top:0">
     <div class="container">
       <div class="section-header">
         <div>
@@ -997,7 +1004,7 @@ input, select { font-family: inherit; }
   </section>
 
   <!-- PICKUP BANNER -->
-  <section class="pickup-section" id="section-contacto">
+  <section class="pickup-section" id="section-contacto" class="section-alt">
     <div class="container">
       <div class="pickup-grid">
         <div>
@@ -2339,9 +2346,9 @@ function renderDetalle_spa(id) {
           '<a href="https://wa.me/5491136196053?text=' + waMsg + '" target="_blank" class="detail-btn-wa">' +
             '<svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>' +
             'Consultar por WhatsApp</a>' +
-          '<hr class="detail-divider"/>' +
+          '<div style="margin:1.5rem 0"></div>' +
           '<p class="detail-section-title">Descripción</p><p class="detail-desc">' + p.descripcion + '</p>' +
-          '<hr class="detail-divider"/>' +
+          '<div style="margin:1.5rem 0"></div>' +
           '<p class="detail-section-title">Política de cambios</p>' +
           '<div class="policy-list">' +
             '<div class="policy-item ok"><svg class="policy-icon" width="16" height="16" fill="none" stroke="var(--gold)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>Cambios dentro de los 30 días con etiqueta</div>' +

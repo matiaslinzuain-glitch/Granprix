@@ -2,7 +2,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --black:   #0a0a0a;
+  --black:   #0d0d0d;
   --surface: #111111;
   --s2:      #1a1a1a;
   --s3:      #222222;
@@ -21,7 +21,7 @@ html { scroll-behavior: smooth; }
 body {
   background: var(--black);
   color: var(--white);
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -47,7 +47,8 @@ input, select { font-family: inherit; }
 
 /* ── Layout ──────────────────────────────────────────────────────────────── */
 .container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
-.section { padding: 5rem 0; }
+.section { padding: 5rem 0; background: #0d0d0d; }
+.section-alt { padding: 5rem 0; background: #141414; }
 
 /* ── Placeholder imágenes ────────────────────────────────────────────────── */
 .placeholder-img {
@@ -81,7 +82,7 @@ input, select { font-family: inherit; }
   padding: 1rem 2rem;
   transition: background 0.2s;
 }
-.btn-gold:hover { background: var(--gold-l); }
+.btn-gold:hover { background: var(--gold-l); box-shadow: 0 4px 20px rgba(212,168,83,0.30); }
 .btn-outline {
   display: inline-flex;
   align-items: center;
@@ -95,7 +96,7 @@ input, select { font-family: inherit; }
   padding: 1rem 2rem;
   transition: border-color 0.2s, color 0.2s;
 }
-.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); box-shadow: 0 4px 20px rgba(212,168,83,0.20); }
 .btn-block { width: 100%; }
 .btn-link {
   color: var(--gold);
@@ -346,7 +347,10 @@ input, select { font-family: inherit; }
   overflow: hidden;
   display: block;
   background: var(--s2);
+  cursor: pointer;
+  transition: box-shadow 0.3s;
 }
+.cat-card:hover { box-shadow: 0 8px 30px rgba(212,168,83,0.15); }
 .cat-card-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
 .cat-card:hover .cat-card-img { transform: scale(1.05); }
 .cat-overlay {
@@ -391,7 +395,7 @@ input, select { font-family: inherit; }
   background: none;
 }
 .filter-btn:hover { border-color: var(--gold); color: var(--white); }
-.filter-btn.active { background: var(--gold); color: #000; border-color: var(--gold); }
+.filter-btn.active { background: var(--gold); color: #000; border-color: var(--gold); box-shadow: 0 4px 16px rgba(212,168,83,0.25); }
 .sort-select {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -410,10 +414,11 @@ input, select { font-family: inherit; }
 .product-card {
   background: var(--surface);
   display: block;
-  transition: background 0.3s;
+  transition: background 0.3s, box-shadow 0.3s;
   position: relative;
+  cursor: pointer;
 }
-.product-card:hover { background: #161616; }
+.product-card:hover { background: #161616; box-shadow: 0 8px 30px rgba(212,168,83,0.12); }
 .product-card-img {
   position: relative;
   aspect-ratio: 3/4;
@@ -439,7 +444,7 @@ input, select { font-family: inherit; }
   transform: translateY(6px);
   transition: opacity 0.2s, transform 0.2s, background 0.2s;
 }
-.add-btn:hover { background: var(--gold-l); }
+.add-btn:hover { background: var(--gold-l); box-shadow: 0 4px 16px rgba(212,168,83,0.35); }
 .product-card:hover .add-btn { opacity: 1; transform: translateY(0); }
 .product-card-body { padding: 1rem; }
 .product-cat { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
@@ -505,6 +510,7 @@ input, select { font-family: inherit; }
   display: flex; align-items: center; justify-content: center;
   color: var(--muted);
   transition: border-color 0.2s, color 0.2s;
+  cursor: pointer;
 }
 .social-link:hover { border-color: var(--gold); color: var(--gold); }
 .footer-heading { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); margin-bottom: 1.25rem; }
@@ -632,7 +638,8 @@ input, select { font-family: inherit; }
 
 /* ── Contacto ────────────────────────────────────────────────────────────── */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-.contact-card { background: var(--surface); border: 1px solid var(--border); padding: 2rem; margin-bottom: 1.5rem; }
+.contact-card { background: var(--surface); border: 1px solid var(--border); padding: 2rem; margin-bottom: 1.5rem; transition: box-shadow 0.3s; }
+.contact-card:hover { box-shadow: 0 8px 30px rgba(212,168,83,0.10); }
 .contact-card:last-child { margin-bottom: 0; }
 .contact-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.75rem; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
 .map-placeholder { width: 100%; height: 180px; background: var(--s2); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1.25rem; }
@@ -659,7 +666,7 @@ input, select { font-family: inherit; }
 
 /* ── Ripple effect ───────────────────────────────────────────────────────── */
 .btn-gold, .btn-outline, .btn-dark, .filter-btn, .add-btn, .cart-btn,
-.talle-btn, .btn-wa-big, .menu-tab { position: relative; overflow: hidden; }
+.talle-btn, .btn-wa-big, .menu-tab { position: relative; overflow: hidden; user-select: none; }
 .ripple-wave {
   position: absolute; border-radius: 50%; pointer-events: none;
   transform: scale(0);
