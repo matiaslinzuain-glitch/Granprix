@@ -544,6 +544,71 @@ const PRODUCTOS = [
     imagen: "img/campera-polar-esp-1.jpeg",
     galeria: ["img/campera-polar-esp-2.jpeg", "img/campera-polar-esp-3.jpeg"],
     descripcion: "Campera polar en talle especial. Del talle 6 al 10."
+  },
+  {
+    id: "056",
+    nombre: "Chaleco Vestir",
+    categoria: "accesorios",
+    precio: 40000,
+    precioAnterior: null,
+    talles: ["38", "40", "42", "44", "46", "48", "50", "52", "54"],
+    colores: ["Varios colores"],
+    badge: "nuevo",
+    imagen: "img/chaleco-vestir-fb.png",
+    galeria: ["img/chaleco-vestir-1.jpeg", "img/chaleco-vestir-2.jpeg", "img/chaleco-vestir-3.jpeg"],
+    descripcion: "Chaleco de vestir disponible en varios colores. Del talle 38 al 54."
+  },
+  {
+    id: "057",
+    nombre: "Corbatas y Corbatines Vestir",
+    categoria: "accesorios",
+    precio: 10000,
+    precioAnterior: null,
+    talles: ["Talle único"],
+    colores: ["Varios colores"],
+    badge: "nuevo",
+    imagen: "img/corbata-vestir-1.jpeg",
+    galeria: ["img/corbata-vestir-2.jpeg", "img/corbata-vestir-3.jpeg", "img/corbata-vestir-4.jpeg", "img/corbata-vestir-5.jpeg", "img/corbata-vestir-6.jpeg"],
+    descripcion: "Corbatas y corbatines de vestir en gran variedad de colores y diseños."
+  },
+  {
+    id: "058",
+    nombre: "Moños Vestir",
+    categoria: "accesorios",
+    precio: 9000,
+    precioAnterior: null,
+    talles: ["Adultos", "Niños"],
+    colores: ["Varios colores"],
+    badge: "nuevo",
+    imagen: "img/mono-vestir-1.jpeg",
+    galeria: ["img/mono-vestir-2.jpeg"],
+    descripcion: "Moños de vestir para adultos y niños, en variedad de colores."
+  },
+  {
+    id: "059",
+    nombre: "Tiradores Varios Tonos",
+    categoria: "accesorios",
+    precio: 10000,
+    precioAnterior: null,
+    talles: ["Talle único"],
+    colores: ["Varios tonos"],
+    badge: "nuevo",
+    imagen: "img/tirador-vestir-1.jpeg",
+    galeria: ["img/tirador-vestir-2.jpeg"],
+    descripcion: "Tiradores en gran variedad de tonos y colores."
+  },
+  {
+    id: "060",
+    nombre: "Travacorbatas",
+    categoria: "accesorios",
+    precio: 13000,
+    precioAnterior: null,
+    talles: ["Talle único"],
+    colores: ["Varios colores"],
+    badge: "nuevo",
+    imagen: "img/travacorbata-1.jpeg",
+    galeria: [],
+    descripcion: "Travacorbatas de vestir en varios colores y diseños."
   }
 ];
 
