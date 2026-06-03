@@ -271,17 +271,27 @@ let selImage  = null; // { name, rawBase64, dataUrl }
 async function doLogin() {
   const t = document.getElementById("token-input").value.trim();
   if (!t) return;
-  document.getElementById("login-err").style.display = "none";
+  const errEl = document.getElementById("login-err");
+  errEl.style.display = "none";
   try {
-    const r = await fetch(`https://api.github.com/repos/${REPOS[0]}`, {
+    // Verify token using /user endpoint (always requires auth)
+    const r = await fetch("https://api.github.com/user", {
       headers: { Authorization: `Bearer ${t}` }
     });
-    if (!r.ok) throw new Error("auth");
+    if (!r.ok) {
+      const status = r.status;
+      if (status === 401) errEl.textContent = "Token inválido o expirado. Creá uno nuevo en github.com/settings/tokens.";
+      else if (status === 403) errEl.textContent = "Token sin permisos suficientes. Asegurate de tildar el scope 'repo'.";
+      else errEl.textContent = `Error ${status}. Verificá el token e intentá de nuevo.`;
+      errEl.style.display = "block";
+      return;
+    }
     token = t;
     localStorage.setItem("gp_adm", btoa(t));
     showAdmin();
   } catch {
-    document.getElementById("login-err").style.display = "block";
+    errEl.textContent = "No se pudo conectar. Verificá tu conexión a internet.";
+    errEl.style.display = "block";
   }
 }
 function doLogout() {
