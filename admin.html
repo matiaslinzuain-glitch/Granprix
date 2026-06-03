@@ -24,11 +24,12 @@
     /* ── LAYOUT ── */
     .admin-header { background:var(--surface); border-bottom:1px solid var(--border); padding:.9rem 1.5rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
     .admin-logo { font-size:1rem; font-weight:800; color:var(--gold); letter-spacing:.04em; }
-    .admin-body { max-width:800px; margin:0 auto; padding:2rem 1.25rem 4rem; }
+    .admin-body { max-width:820px; margin:0 auto; padding:2rem 1.25rem 4rem; }
 
     /* ── CARDS ── */
     .card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1.75rem; margin-bottom:1.5rem; }
-    .card-title { font-size:.95rem; font-weight:700; margin-bottom:1.5rem; display:flex; align-items:center; gap:.6rem; }
+    .card-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+    .card-title { font-size:.95rem; font-weight:700; display:flex; align-items:center; gap:.6rem; }
     .card-title::before { content:""; display:block; width:3px; height:1rem; background:var(--gold); border-radius:2px; flex-shrink:0; }
 
     /* ── FORM ── */
@@ -85,6 +86,10 @@
     .btn-sm { padding:.38rem .8rem; font-size:.8rem; }
     .btn-outline { background:transparent; border:1.5px solid var(--border); color:var(--gray); }
     .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+    .btn-danger { background:transparent; border:1.5px solid #450a0a; color:#f87171; }
+    .btn-danger:hover { background:#450a0a; border-color:var(--red); color:var(--white); }
+    .btn-cancel { background:var(--s2); border:1.5px solid var(--border); color:var(--gray); }
+    .btn-cancel:hover { border-color:var(--gray); color:var(--white); }
     .btn-ghost { background:transparent; border:none; color:var(--gray); font-size:.875rem; font-family:inherit; padding:.4rem .75rem; cursor:pointer; }
     .btn-ghost:hover { color:var(--white); }
 
@@ -112,17 +117,22 @@
     /* ── PRODUCT LIST ── */
     .prod-row { display:flex; align-items:center; gap:.85rem; padding:.85rem 0; border-bottom:1px solid var(--border); }
     .prod-row:last-child { border-bottom:none; }
-    .prod-thumb { width:44px; height:44px; border-radius:8px; object-fit:cover; background:var(--s2); flex-shrink:0; }
+    .prod-thumb { width:48px; height:48px; border-radius:8px; object-fit:cover; background:var(--s2); flex-shrink:0; }
     .prod-info { flex:1; min-width:0; }
     .prod-name { font-size:.875rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .prod-meta { font-size:.75rem; color:var(--gray); margin-top:.15rem; }
-    .prod-price { font-size:.875rem; font-weight:700; color:var(--gold); white-space:nowrap; }
+    .prod-price { font-size:.875rem; font-weight:700; color:var(--gold); white-space:nowrap; flex-shrink:0; }
+    .prod-actions { display:flex; gap:.4rem; flex-shrink:0; }
     .empty-st { text-align:center; padding:2rem; color:var(--gray); font-size:.875rem; }
+
+    /* ── EDIT BANNER ── */
+    .edit-banner { background:rgba(212,168,83,.08); border:1px solid rgba(212,168,83,.3); border-radius:10px; padding:.75rem 1rem; font-size:.85rem; color:var(--gold-l); display:none; margin-bottom:1rem; display:flex; align-items:center; gap:.6rem; }
+    .edit-banner svg { flex-shrink:0; }
   </style>
 </head>
 <body>
 
-<!-- ═══════════════ LOGIN ═══════════════ -->
+<!-- ═══════════ LOGIN ═══════════ -->
 <div id="login-screen" class="login-wrap">
   <div class="login-card">
     <div class="login-logo">GRAN PRIX</div>
@@ -135,11 +145,11 @@
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
       Ingresar
     </button>
-    <div id="login-err" class="alert alert-err">Contraseña incorrecta. Verificá e intentá de nuevo.</div>
+    <div id="login-err" class="alert alert-err">Contraseña incorrecta.</div>
   </div>
 </div>
 
-<!-- ═══════════════ ADMIN ═══════════════ -->
+<!-- ═══════════ ADMIN ═══════════ -->
 <div id="admin-screen" style="display:none">
   <header class="admin-header">
     <div class="admin-logo">GRAN PRIX — Admin</div>
@@ -151,9 +161,19 @@
 
   <div class="admin-body">
 
-    <!-- Agregar producto -->
-    <div class="card">
-      <div class="card-title">Agregar producto</div>
+    <!-- ── FORM CARD ── -->
+    <div class="card" id="form-card">
+      <div class="card-header">
+        <div class="card-title" id="form-title">Agregar producto</div>
+      </div>
+
+      <!-- Banner modo edición -->
+      <div class="edit-banner" id="edit-banner" style="display:none">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        <span id="edit-banner-text">Editando producto</span>
+        <button onclick="cancelEdit()" style="margin-left:auto;background:none;border:none;color:var(--gray);cursor:pointer;font-size:.8rem;font-family:inherit">Cancelar</button>
+      </div>
+
       <div class="form-grid">
 
         <div class="form-group form-full">
@@ -225,16 +245,21 @@
         </div>
 
         <div class="form-group form-full">
-          <label class="form-label">Descripción <span>(opcional — se genera automáticamente si la dejás vacía)</span></label>
+          <label class="form-label">Descripción <span>(opcional — se genera automáticamente)</span></label>
           <textarea id="p-desc" class="form-textarea" placeholder="Descripción breve del producto"></textarea>
         </div>
 
-      </div>
+      </div><!-- /form-grid -->
 
-      <button class="btn btn-gold btn-block" id="save-btn" onclick="guardarProducto()" style="margin-top:1.25rem">
-        <span id="save-lbl">Guardar producto</span>
-        <div class="spinner" id="save-spin"></div>
-      </button>
+      <div style="display:flex;gap:.75rem;margin-top:1.25rem;flex-wrap:wrap">
+        <button class="btn btn-gold" id="save-btn" onclick="guardarProducto()" style="flex:1;min-width:180px">
+          <span id="save-lbl">Guardar producto</span>
+          <div class="spinner" id="save-spin"></div>
+        </button>
+        <button class="btn btn-cancel" id="cancel-btn" onclick="cancelEdit()" style="display:none;flex-shrink:0">
+          Cancelar
+        </button>
+      </div>
 
       <div class="progress-wrap" id="prog-wrap">
         <div class="prog-step" id="ps-img" ><div class="step-dot pending" id="pd-img" >1</div><span id="pt-img" >Subir foto</span></div>
@@ -246,9 +271,12 @@
       <div class="alert alert-err" id="al-err"></div>
     </div>
 
-    <!-- Lista de productos -->
+    <!-- ── PRODUCT LIST ── -->
     <div class="card">
-      <div class="card-title">Productos en el sitio</div>
+      <div class="card-header">
+        <div class="card-title">Productos en el sitio</div>
+        <span id="prod-count" style="font-size:.8rem;color:var(--gray)"></span>
+      </div>
       <div id="prod-list"><div class="empty-st">Cargando…</div></div>
     </div>
 
@@ -256,33 +284,40 @@
 </div>
 
 <script>
-// ══════════════════ CONFIG ══════════════════
+// ══════════════════════════════════════════
+//  CONFIG
+// ══════════════════════════════════════════
 const REPOS = [
   "matiaslinzuain-glitch/Granprixindumentariamasculina",
   "matiaslinzuain-glitch/Granprix"
 ];
 
-// ══════════════════ STATE ══════════════════
-let token     = "";
-let selTalles = [];
-let selImage  = null; // { name, rawBase64, dataUrl }
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let token          = "";
+let selTalles      = [];
+let selImage       = null;    // { name, rawBase64, dataUrl }  — null = no new image
+let keepImage      = null;    // existing image path when editing (kept if no new upload)
+let formMode       = "add";   // "add" | "edit"
+let editingId      = null;
 
-// ══════════════════ AUTH ══════════════════
+// ══════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════
 async function doLogin() {
   const t = document.getElementById("token-input").value.trim();
   if (!t) return;
   const errEl = document.getElementById("login-err");
   errEl.style.display = "none";
   try {
-    // Verify token using /user endpoint (always requires auth)
     const r = await fetch("https://api.github.com/user", {
       headers: { Authorization: `Bearer ${t}` }
     });
     if (!r.ok) {
-      const status = r.status;
-      if (status === 401) errEl.textContent = "Token inválido o expirado. Creá uno nuevo en github.com/settings/tokens.";
-      else if (status === 403) errEl.textContent = "Token sin permisos suficientes. Asegurate de tildar el scope 'repo'.";
-      else errEl.textContent = `Error ${status}. Verificá el token e intentá de nuevo.`;
+      errEl.textContent = r.status === 401
+        ? "Token inválido o expirado. Creá uno nuevo en github.com/settings/tokens."
+        : `Error ${r.status}. Verificá el token e intentá de nuevo.`;
       errEl.style.display = "block";
       return;
     }
@@ -313,21 +348,21 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("token-input").addEventListener("keydown", e => { if(e.key==="Enter") doLogin(); });
 });
 
-// ══════════════════ GITHUB API ══════════════════
-// Read file via raw URL (no 1MB limit — works for index.html at 2MB+)
+// ══════════════════════════════════════════
+//  GITHUB API
+// ══════════════════════════════════════════
 async function rawRead(repo, path) {
   const r = await fetch(`https://raw.githubusercontent.com/${repo}/main/${path}?t=${Date.now()}`);
-  if (!r.ok) throw new Error(`No se pudo leer ${path}`);
+  if (!r.ok) throw new Error(`No se pudo leer ${path} (HTTP ${r.status})`);
   return r.text();
 }
-
 async function ghPost(repo, ep, body) {
   const r = await fetch(`https://api.github.com/repos/${repo}/${ep}`, {
     method:"POST",
     headers:{ Authorization:`Bearer ${token}`, "Content-Type":"application/json" },
     body: JSON.stringify(body)
   });
-  if (!r.ok) { const e=await r.json(); throw new Error(e.message||`HTTP ${r.status}`); }
+  if (!r.ok) { const e=await r.json(); throw new Error(e.message || `HTTP ${r.status}`); }
   return r.json();
 }
 async function ghPatch(repo, ep, body) {
@@ -336,96 +371,107 @@ async function ghPatch(repo, ep, body) {
     headers:{ Authorization:`Bearer ${token}`, "Content-Type":"application/json" },
     body: JSON.stringify(body)
   });
-  if (!r.ok) { const e=await r.json(); throw new Error(e.message||`HTTP ${r.status}`); }
+  if (!r.ok) { const e=await r.json(); throw new Error(e.message || `HTTP ${r.status}`); }
   return r.json();
 }
-
-// Commit multiple files in one push (Git Data API — handles any file size)
+// Commit múltiples archivos en un solo push (Git Data API — sin límite de tamaño)
 async function ghCommit(repo, files, message) {
-  // 1. HEAD ref
   const refR = await fetch(`https://api.github.com/repos/${repo}/git/refs/heads/main`,
     { headers:{ Authorization:`Bearer ${token}` }});
   if (!refR.ok) throw new Error("No se pudo leer el branch de " + repo);
   const headSha = (await refR.json()).object.sha;
 
-  // 2. Base tree
   const cmR = await fetch(`https://api.github.com/repos/${repo}/git/commits/${headSha}`,
     { headers:{ Authorization:`Bearer ${token}` }});
   const treeSha = (await cmR.json()).tree.sha;
 
-  // 3. Blobs
   const entries = await Promise.all(files.map(async f => {
     const blob = await ghPost(repo, "git/blobs", {
-      content:  f.base64 ?? f.content,
+      content: f.base64 ?? f.content,
       encoding: f.base64 ? "base64" : "utf-8"
     });
     return { path:f.path, mode:"100644", type:"blob", sha:blob.sha };
   }));
 
-  // 4. Tree → Commit → Update ref
-  const tree   = await ghPost(repo, "git/trees",   { base_tree:treeSha, tree:entries });
-  const newCm  = await ghPost(repo, "git/commits", { message, tree:tree.sha, parents:[headSha] });
+  const tree  = await ghPost(repo, "git/trees",   { base_tree:treeSha, tree:entries });
+  const newCm = await ghPost(repo, "git/commits", { message, tree:tree.sha, parents:[headSha] });
   await ghPatch(repo, "git/refs/heads/main", { sha: newCm.sha });
 }
 
-// ══════════════════ PRODUCTS ══════════════════
+// ══════════════════════════════════════════
+//  SERIALIZACIÓN DE PRODUCTOS
+// ══════════════════════════════════════════
 function parseProducts(src) {
   const m = src.match(/const PRODUCTOS\s*=\s*(\[[\s\S]*?\]);/);
-  if (!m) throw new Error("No se encontró PRODUCTOS");
+  if (!m) throw new Error("No se encontró el array PRODUCTOS");
   return new Function("return " + m[1])();
 }
 function getNextId(src) {
   const ids = [...src.matchAll(/id:\s*"(\d+)"/g)].map(m => parseInt(m[1]));
   return ids.length ? String(Math.max(...ids)+1).padStart(3,"0") : "061";
 }
-
-// Serialize product to JS object literal string (matching data.js style)
-function esc(s)   { return String(s).replace(/\\/g,"\\\\").replace(/"/g,'\\"'); }
-function q(s)     { return `"${esc(s)}"`; }
-function qArr(a)  { return "[" + a.map(q).join(", ") + "]"; }
+function esc(s) { return String(s).replace(/\\/g,"\\\\").replace(/"/g,'\\"'); }
+function q(s)   { return `"${esc(s)}"`; }
+function qArr(a){ return "[" + a.map(q).join(", ") + "]"; }
 function prodJS(p) {
-  return `  {\n    id: ${q(p.id)},\n    nombre: ${q(p.nombre)},\n    categoria: ${q(p.categoria)},\n    precio: ${p.precio},\n    precioAnterior: ${p.precioAnterior??'null'},\n    talles: ${qArr(p.talles)},\n    colores: ["Varios colores"],\n    badge: ${p.badge?q(p.badge):'null'},\n    imagen: ${p.imagen?q(p.imagen):'null'},\n    galeria: [],\n    descripcion: ${q(p.descripcion)}\n  }`;
+  return `  {\n    id: ${q(p.id)},\n    nombre: ${q(p.nombre)},\n    categoria: ${q(p.categoria)},\n    precio: ${p.precio},\n    precioAnterior: ${p.precioAnterior??'null'},\n    talles: ${qArr(p.talles)},\n    colores: ${qArr(p.colores||['Varios colores'])},\n    badge: ${p.badge?q(p.badge):'null'},\n    imagen: ${p.imagen?q(p.imagen):'null'},\n    galeria: ${JSON.stringify(p.galeria||[])},\n    descripcion: ${q(p.descripcion)}\n  }`;
 }
 
-function insertDataJs(src, p) {
-  const i = src.lastIndexOf("\n];");
-  if (i===-1) throw new Error("Formato de data.js no reconocido");
-  return src.slice(0,i) + ",\n" + prodJS(p) + "\n" + src.slice(i);
+// Reconstruye data.js reemplazando el array PRODUCTOS completo
+function rebuildDataJs(src, products) {
+  const tag = "const PRODUCTOS = [";
+  const si = src.indexOf(tag) + tag.length;
+  const ei = src.lastIndexOf("\n];");
+  if (si < tag.length || ei < 0) throw new Error("Formato data.js no reconocido");
+  return src.slice(0,si) + "\n" + products.map(prodJS).join(",\n") + "\n" + src.slice(ei+1);
 }
-function insertIndexHtml(src, p) {
-  const marker = "\n];\n\nfunction formatPrice";
-  const i = src.indexOf(marker);
-  if (i===-1) throw new Error("Formato de index.html no reconocido");
-  return src.slice(0,i) + ",\n" + prodJS(p) + "\n" + src.slice(i);
+// Reconstruye index.html reemplazando su array PRODUCTOS inline
+function rebuildIndexHtml(src, products) {
+  const tag = "const PRODUCTOS = [";
+  const end = "\n];\n\nfunction formatPrice";
+  const si = src.indexOf(tag) + tag.length;
+  const ei = src.indexOf(end);
+  if (si < tag.length || ei < 0) throw new Error("Formato index.html no reconocido");
+  return src.slice(0,si) + "\n" + products.map(prodJS).join(",\n") + "\n" + src.slice(ei+1);
 }
 
+// ══════════════════════════════════════════
+//  LISTA DE PRODUCTOS
+// ══════════════════════════════════════════
 async function loadProducts() {
   const wrap = document.getElementById("prod-list");
+  const count = document.getElementById("prod-count");
   wrap.innerHTML = '<div class="empty-st">Cargando…</div>';
   try {
     const src   = await rawRead(REPOS[0], "js/data.js");
     const prods = parseProducts(src);
-    wrap.innerHTML = prods.length
-      ? prods.map(p=>`
-          <div class="prod-row">
-            ${p.imagen
-              ? `<img class="prod-thumb" src="${p.imagen}" loading="lazy" onerror="this.style.visibility='hidden'">`
-              : `<div class="prod-thumb"></div>`}
-            <div class="prod-info">
-              <div class="prod-name">${p.nombre}</div>
-              <div class="prod-meta">${p.categoria} · ${p.talles.slice(0,4).join(", ")}${p.talles.length>4?"…":""}</div>
-            </div>
-            <div class="prod-price">$${p.precio.toLocaleString("es-AR")}</div>
-            <button class="btn btn-outline btn-sm"
-              onclick="editPrecio('${p.id}','${esc(p.nombre)}',${p.precio})">Editar precio</button>
-          </div>`).join("")
-      : '<div class="empty-st">No hay productos.</div>';
+    count.textContent = `${prods.length} productos`;
+    wrap.innerHTML = prods.length ? prods.map(p => `
+      <div class="prod-row">
+        ${p.imagen
+          ? `<img class="prod-thumb" src="${p.imagen}" loading="lazy" onerror="this.style.visibility='hidden'">`
+          : `<div class="prod-thumb"></div>`}
+        <div class="prod-info">
+          <div class="prod-name">${p.nombre}</div>
+          <div class="prod-meta">${p.categoria} · ${p.talles.slice(0,4).join(", ")}${p.talles.length>4?"…":""}</div>
+        </div>
+        <div class="prod-price">$${p.precio.toLocaleString("es-AR")}</div>
+        <div class="prod-actions">
+          <button class="btn btn-outline btn-sm"
+            onclick="editarProducto('${p.id}')">✏️ Editar</button>
+          <button class="btn btn-danger btn-sm"
+            onclick="eliminarProducto('${p.id}','${esc(p.nombre)}')">🗑 Borrar</button>
+        </div>
+      </div>`).join("")
+    : '<div class="empty-st">No hay productos.</div>';
   } catch(e) {
     wrap.innerHTML = `<div class="empty-st" style="color:var(--red)">Error: ${e.message}</div>`;
   }
 }
 
-// ══════════════════ SAVE ══════════════════
+// ══════════════════════════════════════════
+//  GUARDAR (agregar o editar)
+// ══════════════════════════════════════════
 async function guardarProducto() {
   const nombre    = document.getElementById("p-nombre").value.trim();
   const categoria = document.getElementById("p-cat").value;
@@ -438,58 +484,17 @@ async function guardarProducto() {
   if (precio <= 0)       { showErr("Ingresá un precio válido."); return; }
   if (!selTalles.length) { showErr("Agregá al menos un talle (o elegí un preset)."); return; }
 
-  setSaving(true);
-  clearAlerts();
-  showProg();
+  setSaving(true); clearAlerts(); showProg();
 
   try {
-    // Leer data.js para obtener próximo ID
-    const srcData = await rawRead(REPOS[0], "js/data.js");
-    const nextId  = getNextId(srcData);
-
-    // ── Paso 1: subir foto
-    setStep("img","active","Subiendo foto…");
-    let imagenPath = null;
-    if (selImage) {
-      const ext   = selImage.name.split(".").pop().toLowerCase();
-      const fname = `prod-${nextId}-1.${ext}`;
-      imagenPath  = `img/${fname}`;
-      for (const repo of REPOS) {
-        await ghCommit(repo, [{ path:imagenPath, base64:selImage.rawBase64 }], `Imagen: ${fname}`);
-      }
+    if (formMode === "add") {
+      await _doAdd({ nombre, categoria, precio, precioAnt, badge, desc });
+    } else {
+      await _doEdit({ nombre, categoria, precio, precioAnt, badge, desc });
     }
-    setStep("img","done", selImage ? "Foto subida ✓" : "Sin foto (omitida) ✓");
-
-    // Construir producto
-    const product = {
-      id: nextId, nombre, categoria, precio, precioAnterior: precioAnt,
-      talles: selTalles, badge, imagen: imagenPath,
-      descripcion: desc || `${nombre}. Talles: ${selTalles.join(", ")}.`
-    };
-
-    // ── Paso 2: actualizar data.js
-    setStep("data","active","Actualizando catálogo…");
-    for (const repo of REPOS) {
-      const src = await rawRead(repo, "js/data.js");
-      await ghCommit(repo, [{ path:"js/data.js", content:insertDataJs(src,product) }], `Agregar: ${nombre}`);
-    }
-    setStep("data","done","Catálogo actualizado ✓");
-
-    // ── Paso 3: actualizar index.html
-    setStep("home","active","Actualizando página principal…");
-    for (const repo of REPOS) {
-      const src = await rawRead(repo, "index.html");
-      await ghCommit(repo, [{ path:"index.html", content:insertIndexHtml(src,product) }], `Home: ${nombre}`);
-    }
-    setStep("home","done","Página principal actualizada ✓");
-
-    showOk(`✅ "${nombre}" (ID ${nextId}) guardado. El sitio se actualiza en unos segundos.`);
-    resetForm();
-    await loadProducts();
-
   } catch(e) {
     showErr(`❌ Error: ${e.message}`);
-    ["img","data","home"].forEach(s=>{
+    ["img","data","home"].forEach(s => {
       if (!document.getElementById(`pd-${s}`).className.includes("done"))
         setStep(s,"error","Error");
     });
@@ -497,37 +502,194 @@ async function guardarProducto() {
   setSaving(false);
 }
 
-// ══════════════════ EDIT PRICE ══════════════════
-async function editPrecio(id, nombre, actual) {
-  const inp = prompt(`Nuevo precio para "${nombre}":`, actual);
-  if (!inp) return;
-  const nuevo = parseInt(inp);
-  if (isNaN(nuevo)||nuevo<=0) { alert("Precio inválido."); return; }
+async function _doAdd({ nombre, categoria, precio, precioAnt, badge, desc }) {
+  // Leer data.js para obtener próximo ID
+  const srcData = await rawRead(REPOS[0], "js/data.js");
+  const nextId  = getNextId(srcData);
 
-  // Regex que encuentra el precio de este producto específico
-  const re = new RegExp(`(id:\\s*"${id}"[\\s\\S]{0,500}?precio:\\s*)\\d+`);
+  // Subir foto
+  setStep("img","active","Subiendo foto…");
+  let imagenPath = null;
+  if (selImage) {
+    const ext  = selImage.name.split(".").pop().toLowerCase();
+    imagenPath = `img/prod-${nextId}-1.${ext}`;
+    for (const repo of REPOS)
+      await ghCommit(repo, [{ path:imagenPath, base64:selImage.rawBase64 }], `Imagen: prod-${nextId}`);
+  }
+  setStep("img","done", selImage ? "Foto subida ✓" : "Sin foto ✓");
 
+  const product = {
+    id:nextId, nombre, categoria, precio, precioAnterior:precioAnt,
+    talles:selTalles, colores:["Varios colores"], badge, imagen:imagenPath, galeria:[],
+    descripcion: desc || `${nombre}. Talles: ${selTalles.join(", ")}.`
+  };
+
+  // Actualizar data.js
+  setStep("data","active","Actualizando catálogo…");
+  for (const repo of REPOS) {
+    const src = await rawRead(repo, "js/data.js");
+    await ghCommit(repo, [{ path:"js/data.js", content:rebuildDataJs(src, [...parseProducts(src), product]) }],
+      `Agregar: ${nombre}`);
+  }
+  setStep("data","done","Catálogo actualizado ✓");
+
+  // Actualizar index.html
+  setStep("home","active","Actualizando página principal…");
+  for (const repo of REPOS) {
+    const src = await rawRead(repo, "index.html");
+    await ghCommit(repo, [{ path:"index.html", content:rebuildIndexHtml(src, [...parseProducts(src), product]) }],
+      `Home: ${nombre}`);
+  }
+  setStep("home","done","Página principal actualizada ✓");
+
+  showOk(`✅ "${nombre}" (ID ${nextId}) guardado. El sitio se actualiza en unos segundos.`);
+  resetForm(); await loadProducts();
+}
+
+async function _doEdit({ nombre, categoria, precio, precioAnt, badge, desc }) {
+  const id = editingId;
+
+  // Subir nueva foto si hay
+  setStep("img","active","Actualizando foto…");
+  let imagenPath = null; // null = mantener la existente
+  if (selImage) {
+    const ext  = selImage.name.split(".").pop().toLowerCase();
+    imagenPath = `img/prod-${id}-1.${ext}`;
+    for (const repo of REPOS)
+      await ghCommit(repo, [{ path:imagenPath, base64:selImage.rawBase64 }], `Imagen: prod-${id}`);
+    setStep("img","done","Foto actualizada ✓");
+  } else {
+    setStep("img","done","Foto sin cambios ✓");
+  }
+
+  // Actualizar data.js
+  setStep("data","active","Actualizando catálogo…");
+  for (const repo of REPOS) {
+    const src   = await rawRead(repo, "js/data.js");
+    const prods = parseProducts(src);
+    const idx   = prods.findIndex(p => p.id === id);
+    if (idx === -1) throw new Error(`Producto ${id} no encontrado en data.js`);
+    prods[idx] = {
+      ...prods[idx], nombre, categoria, precio, precioAnterior:precioAnt,
+      talles:selTalles, badge,
+      imagen: imagenPath || prods[idx].imagen,
+      descripcion: desc || `${nombre}. Talles: ${selTalles.join(", ")}.`
+    };
+    await ghCommit(repo, [{ path:"js/data.js", content:rebuildDataJs(src,prods) }], `Editar: ${nombre}`);
+  }
+  setStep("data","done","Catálogo actualizado ✓");
+
+  // Actualizar index.html
+  setStep("home","active","Actualizando página principal…");
+  for (const repo of REPOS) {
+    const src   = await rawRead(repo, "index.html");
+    const prods = parseProducts(src);
+    const idx   = prods.findIndex(p => p.id === id);
+    if (idx === -1) throw new Error(`Producto ${id} no encontrado en index.html`);
+    prods[idx] = {
+      ...prods[idx], nombre, categoria, precio, precioAnterior:precioAnt,
+      talles:selTalles, badge,
+      imagen: imagenPath || prods[idx].imagen,
+      descripcion: desc || `${nombre}. Talles: ${selTalles.join(", ")}.`
+    };
+    await ghCommit(repo, [{ path:"index.html", content:rebuildIndexHtml(src,prods) }], `Editar home: ${nombre}`);
+  }
+  setStep("home","done","Página principal actualizada ✓");
+
+  showOk(`✅ "${nombre}" actualizado correctamente.`);
+  cancelEdit(); await loadProducts();
+}
+
+// ══════════════════════════════════════════
+//  EDITAR PRODUCTO
+// ══════════════════════════════════════════
+async function editarProducto(id) {
   try {
-    for (const repo of REPOS) {
-      const src = await rawRead(repo, "js/data.js");
-      if (!re.test(src)) throw new Error(`Producto ${id} no encontrado`);
-      await ghCommit(repo,[{path:"js/data.js",content:src.replace(re,`$1${nuevo}`)}],
-        `Precio ${nombre}: $${nuevo.toLocaleString("es-AR")}`);
+    const src  = await rawRead(REPOS[0], "js/data.js");
+    const prod = parseProducts(src).find(p => p.id === id);
+    if (!prod) throw new Error("Producto no encontrado");
+
+    formMode  = "edit";
+    editingId = id;
+
+    // Pre-llenar formulario
+    document.getElementById("p-nombre").value    = prod.nombre;
+    document.getElementById("p-cat").value       = prod.categoria;
+    document.getElementById("p-badge").value     = prod.badge || "";
+    document.getElementById("p-precio").value    = prod.precio;
+    document.getElementById("p-precio-ant").value = prod.precioAnterior || "";
+    document.getElementById("p-desc").value      = prod.descripcion || "";
+
+    // Talles
+    selTalles = [...prod.talles];
+    renderTalles();
+
+    // Imagen actual
+    selImage   = null;
+    keepImage  = prod.imagen;
+    if (prod.imagen) {
+      document.getElementById("img-prev").src           = prod.imagen;
+      document.getElementById("upload-prev").style.display = "block";
+      document.getElementById("upload-ph").style.display   = "none";
+    } else {
+      document.getElementById("upload-prev").style.display = "none";
+      document.getElementById("upload-ph").style.display   = "";
     }
-    for (const repo of REPOS) {
-      const src = await rawRead(repo, "index.html");
-      if (re.test(src))
-        await ghCommit(repo,[{path:"index.html",content:src.replace(re,`$1${nuevo}`)}],
-          `Precio home ${nombre}`);
-    }
-    alert(`✅ Precio de "${nombre}" actualizado a $${nuevo.toLocaleString("es-AR")}`);
-    await loadProducts();
+
+    // UI
+    document.getElementById("form-title").innerHTML =
+      '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Editar producto';
+    document.getElementById("edit-banner").style.display  = "flex";
+    document.getElementById("edit-banner-text").textContent = `Editando: ${prod.nombre}`;
+    document.getElementById("cancel-btn").style.display   = "inline-flex";
+    document.getElementById("save-lbl").textContent       = "Guardar cambios";
+    clearAlerts();
+
+    // Scroll al formulario
+    document.getElementById("form-card").scrollIntoView({ behavior:"smooth", block:"start" });
   } catch(e) {
     alert(`Error: ${e.message}`);
   }
 }
 
-// ══════════════════ IMAGE UPLOAD ══════════════════
+function cancelEdit() {
+  formMode  = "add";
+  editingId = null;
+  document.getElementById("form-title").textContent      = "Agregar producto";
+  document.getElementById("edit-banner").style.display   = "none";
+  document.getElementById("cancel-btn").style.display    = "none";
+  document.getElementById("save-lbl").textContent        = "Guardar producto";
+  resetForm();
+  clearAlerts();
+}
+
+// ══════════════════════════════════════════
+//  ELIMINAR PRODUCTO
+// ══════════════════════════════════════════
+async function eliminarProducto(id, nombre) {
+  if (!confirm(`¿Eliminás "${nombre}"?\n\nEsta acción no se puede deshacer.`)) return;
+
+  try {
+    for (const repo of REPOS) {
+      const src   = await rawRead(repo, "js/data.js");
+      const prods = parseProducts(src).filter(p => p.id !== id);
+      await ghCommit(repo, [{ path:"js/data.js", content:rebuildDataJs(src,prods) }], `Eliminar: ${nombre}`);
+    }
+    for (const repo of REPOS) {
+      const src   = await rawRead(repo, "index.html");
+      const prods = parseProducts(src).filter(p => p.id !== id);
+      await ghCommit(repo, [{ path:"index.html", content:rebuildIndexHtml(src,prods) }], `Eliminar home: ${nombre}`);
+    }
+    if (editingId === id) cancelEdit();
+    await loadProducts();
+  } catch(e) {
+    alert(`Error al eliminar: ${e.message}`);
+  }
+}
+
+// ══════════════════════════════════════════
+//  IMAGEN
+// ══════════════════════════════════════════
 function handleFile(input) {
   const file = input.files[0];
   if (!file) return;
@@ -536,7 +698,7 @@ function handleFile(input) {
   reader.onload = e => {
     const dataUrl = e.target.result;
     selImage = { name:file.name, rawBase64:dataUrl.split(",")[1], dataUrl };
-    document.getElementById("img-prev").src     = dataUrl;
+    document.getElementById("img-prev").src           = dataUrl;
     document.getElementById("upload-ph").style.display   = "none";
     document.getElementById("upload-prev").style.display = "block";
   };
@@ -544,7 +706,7 @@ function handleFile(input) {
 }
 function removeImg(e) {
   e.stopPropagation();
-  selImage = null;
+  selImage = null; keepImage = null;
   document.getElementById("img-file").value              = "";
   document.getElementById("upload-prev").style.display   = "none";
   document.getElementById("upload-ph").style.display     = "";
@@ -560,7 +722,7 @@ function initDrop() {
         e.preventDefault();
         const f = e.dataTransfer.files[0];
         if (f?.type.startsWith("image/")) {
-          const dt = new DataTransfer(); dt.items.add(f);
+          const dt=new DataTransfer(); dt.items.add(f);
           document.getElementById("img-file").files = dt.files;
           handleFile(document.getElementById("img-file"));
         }
@@ -568,73 +730,64 @@ function initDrop() {
     }));
 }
 
-// ══════════════════ TALLES TAG INPUT ══════════════════
+// ══════════════════════════════════════════
+//  TALLES
+// ══════════════════════════════════════════
 function focusTalleInput(){ document.getElementById("talle-input")?.focus(); }
 function bindTalleInput() {
   const el = document.getElementById("talle-input");
   el.addEventListener("keydown", onTalleKey);
-  el.addEventListener("blur", e=>{
-    const v=e.target.value.trim();
-    if(v){ addTalle(v.replace(/,/g,"")); e.target.value=""; }
-  });
+  el.addEventListener("blur", e=>{ const v=e.target.value.trim(); if(v){addTalle(v.replace(/,/g,"")); e.target.value="";} });
 }
 function onTalleKey(e) {
   if (e.key==="Enter"||e.key===",") {
     e.preventDefault();
     const v=e.target.value.trim().replace(/,/g,"");
-    if(v) addTalle(v);
-    e.target.value="";
+    if(v) addTalle(v); e.target.value="";
   } else if (e.key==="Backspace"&&!e.target.value&&selTalles.length) {
     removeTalle(selTalles[selTalles.length-1]);
   }
 }
-function addTalle(v) {
-  if (!v||selTalles.includes(v)) return;
-  selTalles.push(v); renderTalles();
-}
-function removeTalle(v) {
-  selTalles=selTalles.filter(t=>t!==v); renderTalles();
-}
+function addTalle(v) { if(!v||selTalles.includes(v)) return; selTalles.push(v); renderTalles(); }
+function removeTalle(v) { selTalles=selTalles.filter(t=>t!==v); renderTalles(); }
 function setPreset(arr) { selTalles=[]; arr.forEach(addTalle); }
 function renderTalles() {
   const wrap = document.getElementById("tags-wrap");
-  wrap.innerHTML = selTalles.map(t=>
+  wrap.innerHTML = selTalles.map(t =>
     `<span class="tag">${t}<button class="tag-x" onclick="removeTalle('${t}')" type="button">×</button></span>`
   ).join("");
-  const inp = document.createElement("input");
+  const inp=document.createElement("input");
   inp.id="talle-input"; inp.className="tag-text-input";
-  inp.placeholder = selTalles.length ? "" : "Ej: S, M, L, XL…";
+  inp.placeholder=selTalles.length?"":"Ej: S, M, L, XL…";
   inp.setAttribute("autocomplete","off");
   wrap.appendChild(inp);
-  inp.addEventListener("keydown", onTalleKey);
-  inp.addEventListener("blur", e=>{
-    const v=e.target.value.trim();
-    if(v){ addTalle(v.replace(/,/g,"")); e.target.value=""; }
-  });
+  inp.addEventListener("keydown",onTalleKey);
+  inp.addEventListener("blur",e=>{ const v=e.target.value.trim(); if(v){addTalle(v.replace(/,/g,"")); e.target.value="";} });
 }
 
-// ══════════════════ UI HELPERS ══════════════════
+// ══════════════════════════════════════════
+//  UI HELPERS
+// ══════════════════════════════════════════
 function setSaving(on) {
-  document.getElementById("save-btn").disabled         = on;
-  document.getElementById("save-lbl").textContent      = on ? "Guardando…" : "Guardar producto";
-  document.getElementById("save-spin").style.display   = on ? "inline-block" : "none";
+  document.getElementById("save-btn").disabled       = on;
+  document.getElementById("save-lbl").textContent    = on ? "Guardando…" : (formMode==="edit" ? "Guardar cambios" : "Guardar producto");
+  document.getElementById("save-spin").style.display = on ? "inline-block" : "none";
 }
 function showProg() {
   document.getElementById("prog-wrap").style.display = "block";
   [["img","1","Subir foto"],["data","2","Actualizar catálogo"],["home","3","Actualizar página principal"]]
     .forEach(([id,n,txt])=>setStep(id,"pending",txt,n));
 }
-function setStep(id, state, txt, n) {
-  const dot  = document.getElementById(`pd-${id}`);
-  const span = document.getElementById(`pt-${id}`);
-  const row  = document.getElementById(`ps-${id}`);
-  dot.className     = `step-dot ${state}`;
-  dot.textContent   = state==="done"?"✓" : state==="error"?"✕" : (n||"·");
-  span.textContent  = txt;
-  row.className     = `prog-step ${state}`;
+function setStep(id,state,txt,n) {
+  const dot=document.getElementById(`pd-${id}`);
+  const sp =document.getElementById(`pt-${id}`);
+  const row=document.getElementById(`ps-${id}`);
+  dot.className=`step-dot ${state}`;
+  dot.textContent=state==="done"?"✓":state==="error"?"✕":(n||"·");
+  sp.textContent=txt; row.className=`prog-step ${state}`;
 }
-function showOk(msg)  { const el=document.getElementById("al-ok");  el.textContent=msg; el.style.display="block"; }
-function showErr(msg) { const el=document.getElementById("al-err"); el.textContent=msg; el.style.display="block"; }
+function showOk(msg)  { const e=document.getElementById("al-ok");  e.textContent=msg; e.style.display="block"; }
+function showErr(msg) { const e=document.getElementById("al-err"); e.textContent=msg; e.style.display="block"; }
 function clearAlerts() {
   ["al-ok","al-err"].forEach(id=>document.getElementById(id).style.display="none");
   document.getElementById("prog-wrap").style.display="none";
@@ -642,8 +795,8 @@ function clearAlerts() {
 function resetForm() {
   ["p-nombre","p-precio","p-precio-ant","p-desc"].forEach(id=>document.getElementById(id).value="");
   document.getElementById("p-badge").value="";
-  selTalles=[]; renderTalles();
-  selImage=null;
+  selTalles=[]; selImage=null; keepImage=null;
+  renderTalles();
   document.getElementById("img-file").value="";
   document.getElementById("upload-prev").style.display="none";
   document.getElementById("upload-ph").style.display="";
