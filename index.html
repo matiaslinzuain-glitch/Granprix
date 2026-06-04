@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title id="page-title">Gran Prix — Indumentaria Masculina | Liniers, CABA</title>
   <meta name="description" content="Tienda de ropa masculina en Rivadavia 11450 local 4, Liniers, CABA." />
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" /></noscript>
   <style>
 /* ── Reset & Base ──────────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -810,7 +812,7 @@ input, select { font-family: inherit; }
     <div class="container">
       <div class="navbar-inner">
         <a href="#/" class="navbar-logo">
-          <img src="img/logo.svg" alt="Grand Prix Indumentaria Masculina" />
+          <img src="img/logo.svg" alt="Grand Prix Indumentaria Masculina" decoding="async" />
         </a>
         <ul class="navbar-links">
           <li><a href="#/" data-nav="home">Inicio</a></li>
@@ -877,7 +879,7 @@ input, select { font-family: inherit; }
       <div class="hero-img-wrap">
         <div class="hero-img-frame"></div>
         <div class="hero-img-inner">
-          <img src="img/hero-portada.jpeg" alt="Grand Prix — Local en Liniers" style="width:100%;height:auto;display:block;">
+          <img src="img/hero-portada.jpeg" fetchpriority="high" decoding="async" alt="Grand Prix — Local en Liniers" style="width:100%;height:auto;display:block;">
         </div>
         <div class="hero-badge">NUEVA<br>COLECCIÓN</div>
       </div>
@@ -911,7 +913,7 @@ input, select { font-family: inherit; }
       </div>
       <div class="cat-grid">
         <a href="productos.html?categoria=camisas" class="cat-card">
-          <img class="cat-card-img" src="img/camisa-manga-larga-1.jpeg" alt="Camisas">
+          <img class="cat-card-img" src="img/camisa-manga-larga-1.jpeg" loading="lazy" decoding="async" alt="Camisas">
           <div class="cat-overlay"></div>
           <div class="cat-info">
             <span class="cat-name">CAMISAS</span>
@@ -923,7 +925,7 @@ input, select { font-family: inherit; }
           </div>
         </a>
         <a href="productos.html?categoria=pantalones" class="cat-card">
-          <img class="cat-card-img" src="img/representante.jpeg" alt="Pantalones">
+          <img class="cat-card-img" src="img/representante.jpeg" loading="lazy" decoding="async" alt="Pantalones">
           <div class="cat-overlay"></div>
           <div class="cat-info">
             <span class="cat-name">PANTALONES</span>
@@ -931,7 +933,7 @@ input, select { font-family: inherit; }
           </div>
         </a>
         <a href="productos.html?categoria=buzos" class="cat-card">
-          <img class="cat-card-img" src="img/buzo-canguro-frisado-nuevo-1.jpeg" alt="Buzos">
+          <img class="cat-card-img" src="img/buzo-canguro-frisado-nuevo-1.jpeg" loading="lazy" decoding="async" alt="Buzos">
           <div class="cat-overlay"></div>
           <div class="cat-info">
             <span class="cat-name">BUZOS</span>
@@ -939,7 +941,7 @@ input, select { font-family: inherit; }
           </div>
         </a>
         <a href="productos.html?categoria=camperas" class="cat-card">
-          <img class="cat-card-img" src="img/portada-camperas.jpeg" alt="Camperas">
+          <img class="cat-card-img" src="img/portada-camperas.jpeg" loading="lazy" decoding="async" alt="Camperas">
           <div class="cat-overlay"></div>
           <div class="cat-info">
             <span class="cat-name">CAMPERAS</span>
@@ -947,7 +949,7 @@ input, select { font-family: inherit; }
           </div>
         </a>
         <a href="productos.html?categoria=sueters" class="cat-card">
-          <img class="cat-card-img" src="img/portada-sueters.jpeg" alt="Suéters">
+          <img class="cat-card-img" src="img/portada-sueters.jpeg" loading="lazy" decoding="async" alt="Suéters">
           <div class="cat-overlay"></div>
           <div class="cat-info">
             <span class="cat-name">SUÉTERS</span>
@@ -955,7 +957,7 @@ input, select { font-family: inherit; }
           </div>
         </a>
         <a href="productos.html?categoria=accesorios" class="cat-card">
-          <img class="cat-card-img" src="img/chaleco-vestir-fb.png" alt="Accesorios">
+          <img class="cat-card-img" src="img/chaleco-vestir-fb.png" loading="lazy" decoding="async" alt="Accesorios">
           <div class="cat-overlay"></div>
           <div class="cat-info">
             <span class="cat-name">ACCESORIOS</span>
