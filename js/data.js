@@ -609,7 +609,21 @@ const PRODUCTOS = [
     imagen: "img/travacorbata-1.jpeg",
     galeria: [],
     descripcion: "Travacorbatas de vestir en varios colores y diseños."
+  },
+  {
+    id: "061",
+    nombre: "Camperón Forrado con Piel",
+    categoria: "camperas",
+    precio: 70000,
+    precioAnterior: null,
+    talles: ["S", "M", "L", "XL", "XXL"],
+    colores: ["Varios colores"],
+    badge: "nuevo",
+    imagen: "img/camperon-forrado-piel-1.jpeg",
+    galeria: [],
+    descripcion: "Camperón forrado con piel. Abrigado y elegante. Del talle S al XXL."
   }
+
 ];
 
 function formatPrice(n) {
