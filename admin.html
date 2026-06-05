@@ -97,9 +97,38 @@
     .prod-actions { display:flex; gap:.4rem; flex-shrink:0; }
     .empty-st { text-align:center; padding:2rem; color:var(--gray); font-size:.875rem; }
     .edit-banner { background:rgba(212,168,83,.08); border:1px solid rgba(212,168,83,.3); border-radius:10px; padding:.75rem 1rem; font-size:.85rem; color:var(--gold-l); margin-bottom:1rem; display:none; align-items:center; gap:.6rem; }
+
+    /* ── MODAL ── */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.75); z-index:1000; display:flex; align-items:center; justify-content:center; padding:1.5rem; backdrop-filter:blur(4px); opacity:0; transition:opacity .2s; pointer-events:none; }
+    .modal-overlay.show { opacity:1; pointer-events:all; }
+    .modal-box { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:2rem; max-width:400px; width:100%; transform:translateY(12px); transition:transform .2s; }
+    .modal-overlay.show .modal-box { transform:translateY(0); }
+    .modal-icon { width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 1.25rem; font-size:1.4rem; }
+    .modal-icon.danger { background:rgba(239,68,68,.12); }
+    .modal-icon.info { background:rgba(212,168,83,.12); }
+    .modal-title { font-size:1rem; font-weight:700; text-align:center; margin-bottom:.5rem; }
+    .modal-text { font-size:.875rem; color:var(--gray); text-align:center; line-height:1.6; margin-bottom:1.75rem; }
+    .modal-btns { display:flex; gap:.75rem; }
+    .modal-btns button { flex:1; }
   </style>
 </head>
 <body>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-icon" id="modal-icon">⚠️</div>
+    <div class="modal-title" id="modal-title">¿Estás seguro?</div>
+    <div class="modal-text" id="modal-text"></div>
+    <div class="modal-btns">
+      <button class="btn btn-cancel" id="modal-cancel">Cancelar</button>
+      <button class="btn" id="modal-confirm">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" style="position:fixed;bottom:1.5rem;right:1.5rem;z-index:2000;display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.85rem 1.25rem;font-size:.875rem;max-width:320px;box-shadow:0 8px 32px rgba(0,0,0,.4);"></div>
 
 <header class="admin-header">
   <div class="admin-logo">GRAN PRIX — Admin</div>
@@ -451,7 +480,7 @@ async function editarProducto(id) {
     document.getElementById("save-lbl").textContent="Guardar cambios";
     clearAlerts();
     document.getElementById("form-card").scrollIntoView({behavior:"smooth",block:"start"});
-  } catch(e) { alert("Error: "+e.message); }
+  } catch(e) { showToast("❌ Error: "+e.message, "var(--red)"); }
 }
 
 function cancelEdit() {
@@ -464,7 +493,8 @@ function cancelEdit() {
 }
 
 async function eliminarProducto(id, nombre) {
-  if (!confirm(`¿Eliminás "${nombre}"?\nEsta acción no se puede deshacer.`)) return;
+  const ok = await showConfirm(`¿Eliminás "${nombre}"?`, "Esta acción no se puede deshacer.", "danger", "🗑️ Eliminar", "var(--red)");
+  if (!ok) return;
   try {
     for (const repo of REPOS) {
       const src=await rawRead(repo,"js/data.js");
@@ -478,13 +508,13 @@ async function eliminarProducto(id, nombre) {
     }
     if (editingId===id) cancelEdit();
     await loadProducts();
-  } catch(e) { alert("Error al eliminar: "+e.message); }
+  } catch(e) { showToast("❌ Error: "+e.message, "var(--red)"); }
 }
 
 // ══ Imagen ══
 function handleFile(input) {
   const file=input.files[0]; if(!file) return;
-  if(file.size>10*1024*1024){alert("Máximo 10 MB.");return;}
+  if(file.size>10*1024*1024){showToast("La foto es muy grande (máximo 10 MB).", "var(--red)");return;}
   const reader=new FileReader();
   reader.onload=e=>{
     const d=e.target.result; selImage={name:file.name,rawBase64:d.split(",")[1],dataUrl:d};
@@ -534,6 +564,40 @@ function renderTalles(){
 }
 
 // ══ UI ══
+// ══ Modal & Toast ══
+function showConfirm(title, text, type="danger", confirmLabel="Confirmar", confirmColor="var(--red)") {
+  return new Promise(resolve => {
+    const overlay = document.getElementById("modal-overlay");
+    document.getElementById("modal-title").textContent = title;
+    document.getElementById("modal-text").textContent = text;
+    document.getElementById("modal-icon").textContent = type==="danger" ? "🗑️" : "✏️";
+    document.getElementById("modal-icon").className = `modal-icon ${type}`;
+    const confirmBtn = document.getElementById("modal-confirm");
+    confirmBtn.textContent = confirmLabel;
+    confirmBtn.style.background = confirmColor;
+    confirmBtn.style.color = "#fff";
+    confirmBtn.style.border = "none";
+    overlay.classList.add("show");
+    const done = (result) => {
+      overlay.classList.remove("show");
+      confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+      document.getElementById("modal-cancel").replaceWith(document.getElementById("modal-cancel").cloneNode(true));
+      resolve(result);
+    };
+    document.getElementById("modal-confirm").addEventListener("click", () => done(true), {once:true});
+    document.getElementById("modal-cancel").addEventListener("click", () => done(false), {once:true});
+    overlay.addEventListener("click", e => { if(e.target===overlay) done(false); }, {once:true});
+  });
+}
+function showToast(msg, color="var(--green)") {
+  const t = document.getElementById("toast");
+  t.innerHTML = `<span style="color:${color}">${msg}</span>`;
+  t.style.display = "block";
+  t.style.borderColor = color.includes("red") ? "rgba(239,68,68,.3)" : "rgba(34,197,94,.3)";
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.style.display="none", 4000);
+}
+
 function setSaving(on){
   document.getElementById("save-btn").disabled=on;
   document.getElementById("save-lbl").textContent=on?"Guardando…":(formMode==="edit"?"Guardar cambios":"Guardar producto");
