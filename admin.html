@@ -776,8 +776,13 @@ async function loadCatsFromRepo() {
   try {
     const src = await rawRead(REPOS[0], "js/categorias.js");
     const match = src.match(/const CATEGORIAS = (\[[\s\S]*?\]);/);
-    if (match) return JSON.parse(match[1]);
-  } catch {}
+    if (match) {
+      const cats = JSON.parse(match[1]);
+      return cats;
+    }
+  } catch (e) {
+    console.error("Error loading categories:", e);
+  }
   return [];
 }
 
@@ -786,18 +791,27 @@ async function loadCategorias() {
 
   // Actualizar select del formulario
   const select = document.getElementById("p-cat");
-  select.innerHTML = categories.map(cat => `<option value="${cat.id}">${esc(cat.nombre)}</option>`).join("");
+  if (select) {
+    select.innerHTML = categories.map(cat => `<option value="${cat.id}">${esc(cat.nombre)}</option>`).join("");
+  }
 
   // Actualizar lista de categorías
   const list = document.getElementById("cat-list");
+  if (!list) return;
+
+  if (!categories || categories.length === 0) {
+    list.innerHTML = `<div class="empty-st" style="grid-column:1/-1;padding:2rem;text-align:center;color:var(--gray)">Sin categorías aún. Agrega una arriba.</div>`;
+    return;
+  }
+
   list.innerHTML = categories.map(cat => `
     <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--s2)">
       ${cat.imagen ? `<img src="${cat.imagen}" style="width:100%;height:100px;object-fit:cover" />` : `<div style="width:100%;height:100px;background:var(--s3);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:.8rem">Sin foto</div>`}
       <div style="padding:.75rem">
         <p style="margin:0 0 .5rem;font-weight:600;font-size:.9rem">${esc(cat.nombre)}</p>
         <div style="display:flex;gap:.5rem;margin-top:.75rem">
-          <button class="btn btn-outline btn-sm" onclick="editarCategoria('${cat.id}')" style="flex:1">✏️ Editar</button>
-          <button class="btn btn-danger btn-sm" onclick="eliminarCategoria('${cat.id}','${esc(cat.nombre)}')" style="flex:1">🗑️</button>
+          <button class="btn btn-outline btn-sm" onclick="editarCategoria('${cat.id}')" style="flex:1;font-size:.75rem">✏️ Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarCategoria('${cat.id}','${esc(cat.nombre)}')" style="flex:1;font-size:.75rem">🗑️</button>
         </div>
       </div>
     </div>
