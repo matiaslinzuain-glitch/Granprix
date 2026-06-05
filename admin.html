@@ -69,6 +69,17 @@
     .btn-ghost { background:transparent; border:none; color:var(--gray); font-size:.875rem; font-family:inherit; padding:.4rem .75rem; cursor:pointer; }
     .btn-ghost:hover { color:var(--white); }
 
+    /* ── GALLERY ── */
+    .gallery-grid { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:.75rem; }
+    .gal-item { position:relative; width:80px; height:80px; border-radius:8px; overflow:hidden; background:var(--s2); flex-shrink:0; }
+    .gal-item img { width:100%; height:100%; object-fit:cover; display:block; }
+    .gal-item-rm { position:absolute; top:3px; right:3px; background:rgba(0,0,0,.8); border:none; color:#fff; cursor:pointer; border-radius:50%; width:20px; height:20px; font-size:.7rem; display:flex; align-items:center; justify-content:center; line-height:1; }
+    .gal-item-rm:hover { background:var(--red); }
+    .gal-item.removed { opacity:.35; }
+    .gal-item.removed .gal-item-rm { background:var(--red); }
+    .gal-add-label { display:inline-flex; align-items:center; gap:.4rem; padding:.45rem .9rem; background:var(--s3); border:1.5px dashed var(--border); border-radius:8px; color:var(--gray); font-size:.8rem; font-family:inherit; cursor:pointer; transition:all .15s; }
+    .gal-add-label:hover { border-color:var(--gold); color:var(--gold); }
+
     .alert { border-radius:10px; padding:.9rem 1rem; font-size:.875rem; display:none; margin-top:1rem; line-height:1.5; }
     .alert-ok  { background:#052e16; border:1px solid #16a34a; color:#86efac; }
     .alert-err { background:#2d0a0a; border:1px solid #dc2626; color:#fca5a5; }
@@ -212,6 +223,16 @@
         </div>
       </div>
       <div class="form-group form-full">
+        <label class="form-label">Fotos adicionales <span>(galería del producto)</span></label>
+        <div class="gallery-grid" id="gallery-grid"></div>
+        <label class="gal-add-label">
+          <input type="file" accept="image/*" multiple id="gal-file" onchange="handleGalleryFiles(this)" style="display:none" />
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          Agregar fotos
+        </label>
+      </div>
+
+      <div class="form-group form-full">
         <label class="form-label">Descripción <span>(opcional)</span></label>
         <textarea id="p-desc" class="form-textarea" placeholder="Descripción breve del producto"></textarea>
       </div>
@@ -227,8 +248,9 @@
 
     <div class="progress-wrap" id="prog-wrap">
       <div class="prog-step" id="ps-img" ><div class="step-dot pending" id="pd-img" >1</div><span id="pt-img" >Subir foto</span></div>
-      <div class="prog-step" id="ps-data"><div class="step-dot pending" id="pd-data">2</div><span id="pt-data">Actualizar catálogo</span></div>
-      <div class="prog-step" id="ps-home"><div class="step-dot pending" id="pd-home">3</div><span id="pt-home">Actualizar página principal</span></div>
+      <div class="prog-step" id="ps-gal" ><div class="step-dot pending" id="pd-gal" >2</div><span id="pt-gal" >Subir galería</span></div>
+      <div class="prog-step" id="ps-data"><div class="step-dot pending" id="pd-data">3</div><span id="pt-data">Actualizar catálogo</span></div>
+      <div class="prog-step" id="ps-home"><div class="step-dot pending" id="pd-home">4</div><span id="pt-home">Actualizar página principal</span></div>
     </div>
     <div class="alert alert-ok"  id="al-ok"></div>
     <div class="alert alert-err" id="al-err"></div>
@@ -257,10 +279,13 @@ const REPOS = [
 ];
 
 // ── State ──
-let selTalles = [];
-let selImage  = null;
-let formMode  = "add";
-let editingId = null;
+let selTalles      = [];
+let selImage       = null;
+let formMode       = "add";
+let editingId      = null;
+let selGallery     = [];   // nuevas fotos de galería a subir [{name,rawBase64,dataUrl}]
+let existingGallery = [];  // paths de galería ya publicados (cuando edita)
+let removedGallery  = new Set(); // paths a eliminar de galería existente
 
 window.addEventListener("DOMContentLoaded", () => {
   bindTalleInput();
@@ -410,7 +435,21 @@ async function _doAdd({nombre,categoria,precio,precioAnt,badge,desc}) {
     for (const repo of REPOS) await ghCommit(repo,[{path:imagenPath,base64:selImage.rawBase64}],`Imagen prod-${nextId}`);
   }
   setStep("img","done",selImage?"Foto subida ✓":"Sin foto ✓");
-  const product={id:nextId,nombre,categoria,precio,precioAnterior:precioAnt,talles:selTalles,colores:["Varios colores"],badge,imagen:imagenPath,galeria:[],descripcion:desc||`${nombre}. Talles: ${selTalles.join(", ")}.`};
+  // Subir fotos de galería
+  let galeriaPaths=[];
+  if (selGallery.length) {
+    setStep("gal","active",`Subiendo ${selGallery.length} fotos…`);
+    const filesToUpload=selGallery.map((f,i)=>{
+      const ext=f.name.split(".").pop().toLowerCase();
+      return {path:`img/prod-${nextId}-${i+2}.${ext}`,base64:f.rawBase64};
+    });
+    galeriaPaths=filesToUpload.map(f=>f.path);
+    for (const repo of REPOS) await ghCommit(repo,filesToUpload,`Galería prod-${nextId}`);
+    setStep("gal","done",`${selGallery.length} fotos subidas ✓`);
+  } else {
+    setStep("gal","done","Sin galería ✓");
+  }
+  const product={id:nextId,nombre,categoria,precio,precioAnterior:precioAnt,talles:selTalles,colores:["Varios colores"],badge,imagen:imagenPath,galeria:galeriaPaths,descripcion:desc||`${nombre}. Talles: ${selTalles.join(", ")}.`};
   setStep("data","active","Actualizando catálogo…");
   for (const repo of REPOS) {
     const src=await rawRead(repo,"js/data.js");
@@ -437,11 +476,29 @@ async function _doEdit({nombre,categoria,precio,precioAnt,badge,desc}) {
     for (const repo of REPOS) await ghCommit(repo,[{path:imagenPath,base64:selImage.rawBase64}],`Imagen prod-${id}`);
     setStep("img","done","Foto actualizada ✓");
   } else { setStep("img","done","Foto sin cambios ✓"); }
+
+  // Manejar galería: subir nuevas fotos y eliminar las removidas
+  let newGaleriaPaths=[...existingGallery.filter(p=>!removedGallery.has(p))];
+  if (selGallery.length || removedGallery.size) {
+    setStep("gal","active","Actualizando galería…");
+    const filesToUpload=selGallery.map((f,i)=>{
+      const ext=f.name.split(".").pop().toLowerCase();
+      return {path:`img/prod-${id}-${existingGallery.length+i+2}.${ext}`,base64:f.rawBase64};
+    });
+    newGaleriaPaths=[...newGaleriaPaths,...filesToUpload.map(f=>f.path)];
+    if (filesToUpload.length) {
+      for (const repo of REPOS) await ghCommit(repo,filesToUpload,`Galería prod-${id}`);
+    }
+    setStep("gal","done",`Galería actualizada ✓`);
+  } else {
+    setStep("gal","done","Galería sin cambios ✓");
+  }
+
   setStep("data","active","Actualizando catálogo…");
   for (const repo of REPOS) {
     const src=await rawRead(repo,"js/data.js"); const prods=parseProducts(src);
     const idx=prods.findIndex(p=>p.id===id); if(idx===-1) throw new Error("Producto no encontrado");
-    prods[idx]={...prods[idx],nombre,categoria,precio,precioAnterior:precioAnt,talles:selTalles,badge,imagen:imagenPath||prods[idx].imagen,descripcion:desc||`${nombre}. Talles: ${selTalles.join(", ")}.`};
+    prods[idx]={...prods[idx],nombre,categoria,precio,precioAnterior:precioAnt,talles:selTalles,badge,imagen:imagenPath||prods[idx].imagen,galeria:newGaleriaPaths,descripcion:desc||`${nombre}. Talles: ${selTalles.join(", ")}.`};
     await ghCommit(repo,[{path:"js/data.js",content:rebuildDataJs(src,prods)}],`Editar: ${nombre}`);
   }
   setStep("data","done","Catálogo actualizado ✓");
@@ -449,7 +506,7 @@ async function _doEdit({nombre,categoria,precio,precioAnt,badge,desc}) {
   for (const repo of REPOS) {
     const src=await rawRead(repo,"index.html"); const prods=parseProducts(src);
     const idx=prods.findIndex(p=>p.id===id); if(idx===-1) throw new Error("Producto no encontrado en home");
-    prods[idx]={...prods[idx],nombre,categoria,precio,precioAnterior:precioAnt,talles:selTalles,badge,imagen:imagenPath||prods[idx].imagen,descripcion:desc||`${nombre}. Talles: ${selTalles.join(", ")}.`};
+    prods[idx]={...prods[idx],nombre,categoria,precio,precioAnterior:precioAnt,talles:selTalles,badge,imagen:imagenPath||prods[idx].imagen,galeria:newGaleriaPaths,descripcion:desc||`${nombre}. Talles: ${selTalles.join(", ")}.`};
     await ghCommit(repo,[{path:"index.html",content:rebuildIndexHtml(src,prods)}],`Editar home: ${nombre}`);
   }
   setStep("home","done","Home actualizado ✓");
@@ -471,6 +528,7 @@ async function editarProducto(id) {
     document.getElementById("p-desc").value=prod.descripcion||"";
     selTalles=[...prod.talles]; renderTalles();
     selImage=null;
+    selGallery=[]; existingGallery=(prod.galeria||[]); removedGallery=new Set(); renderGallery();
     if (prod.imagen) { document.getElementById("img-prev").src=prod.imagen; document.getElementById("upload-prev").style.display="block"; document.getElementById("upload-ph").style.display="none"; }
     else { document.getElementById("upload-prev").style.display="none"; document.getElementById("upload-ph").style.display=""; }
     document.getElementById("form-title").textContent="✏️ Editar producto";
@@ -537,6 +595,57 @@ function initDrop() {
     box.classList.remove("drag");
     if(ev==="drop"){e.preventDefault();const f=e.dataTransfer.files[0];if(f?.type.startsWith("image/")){const dt=new DataTransfer();dt.items.add(f);document.getElementById("img-file").files=dt.files;handleFile(document.getElementById("img-file"));}}
   }));
+}
+
+// ══ Gallery ══
+function handleGalleryFiles(input) {
+  if (!input.files) return;
+  Array.from(input.files).forEach(file => {
+    if (file.size > 10*1024*1024) {
+      showToast("La foto es muy grande (máximo 10 MB).", "var(--red)");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const b64 = e.target.result.split(',')[1];
+      selGallery.push({ name: file.name, rawBase64: b64, dataUrl: e.target.result });
+      renderGallery();
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value = "";
+}
+
+function removeGalleryItem(idx) {
+  if (idx < existingGallery.length) {
+    removedGallery.add(existingGallery[idx]);
+  } else {
+    selGallery.splice(idx - existingGallery.length, 1);
+  }
+  renderGallery();
+}
+
+function renderGallery() {
+  const grid = document.getElementById("gallery-grid");
+  if (!grid) return;
+  grid.innerHTML = "";
+
+  // Fotos existentes
+  existingGallery.forEach((path, i) => {
+    const isRemoved = removedGallery.has(path);
+    const item = document.createElement("div");
+    item.className = `gal-item ${isRemoved ? "removed" : ""}`;
+    item.innerHTML = `<img src="${path}" /><button class="gal-item-rm" onclick="removeGalleryItem(${i})" type="button">×</button>`;
+    grid.appendChild(item);
+  });
+
+  // Fotos nuevas
+  selGallery.forEach((f, i) => {
+    const item = document.createElement("div");
+    item.className = "gal-item";
+    item.innerHTML = `<img src="${f.dataUrl}" /><button class="gal-item-rm" onclick="removeGalleryItem(${existingGallery.length + i})" type="button">×</button>`;
+    grid.appendChild(item);
+  });
 }
 
 // ══ Talles ══
@@ -618,7 +727,9 @@ function resetForm(){
   ["p-nombre","p-precio","p-precio-ant","p-desc"].forEach(id=>document.getElementById(id).value="");
   document.getElementById("p-badge").value="";
   selTalles=[];selImage=null;renderTalles();
+  selGallery=[];existingGallery=[];removedGallery=new Set();renderGallery();
   document.getElementById("img-file").value="";
+  document.getElementById("gal-file").value="";
   document.getElementById("upload-prev").style.display="none";
   document.getElementById("upload-ph").style.display="";
 }
