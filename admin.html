@@ -241,9 +241,21 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // ══ GitHub API ══
 async function rawRead(repo, path) {
-  const r = await fetch(`https://raw.githubusercontent.com/${repo}/main/${path}?t=${Date.now()}`);
-  if (!r.ok) throw new Error(`No se pudo leer ${path}`);
-  return r.text();
+  // Usar GitHub API con auth — siempre devuelve la versión más reciente sin caché
+  try {
+    const r = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      try { return decodeURIComponent(escape(atob(data.content.replace(/\n/g,'')))); }
+      catch { return atob(data.content.replace(/\n/g,'')); }
+    }
+  } catch {}
+  // Fallback: raw URL
+  const r2 = await fetch(`https://raw.githubusercontent.com/${repo}/main/${path}?t=${Date.now()}`);
+  if (!r2.ok) throw new Error(`No se pudo leer ${path}`);
+  return r2.text();
 }
 async function ghPost(repo, ep, body) {
   const r = await fetch(`https://api.github.com/repos/${repo}/${ep}`, {
