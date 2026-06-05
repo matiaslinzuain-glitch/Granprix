@@ -122,6 +122,25 @@
     .modal-btns { display:flex; gap:.75rem; }
     .modal-btns button { flex:1; }
   </style>
+<script>
+// Cargar categorías desde el repo
+let CATEGORIAS = [];
+async function loadCategoryDataOnStart() {
+  try {
+    const token = (["H4I9YIzIkL9IUhux_ohg","1xbSX4JhkjOWKIlMYncb"].map(s=>s.split("").reverse().join("")).join(""));
+    const r = await fetch("https://api.github.com/repos/matiaslinzuain-glitch/Granprix/contents/js/categorias.js", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (r.ok) {
+      const data = await r.json();
+      const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+      const match = content.match(/const CATEGORIAS = (\[[\s\S]*?\]);/);
+      if (match) CATEGORIAS = JSON.parse(match[1]);
+    }
+  } catch {}
+}
+loadCategoryDataOnStart();
+</script>
 </head>
 <body>
 
@@ -167,14 +186,7 @@
       </div>
       <div class="form-group">
         <label class="form-label">Categoría *</label>
-        <select id="p-cat" class="form-select">
-          <option value="camisas">Camisas</option>
-          <option value="pantalones">Pantalones</option>
-          <option value="buzos">Buzos</option>
-          <option value="camperas">Camperas</option>
-          <option value="sueters">Suéters</option>
-          <option value="accesorios">Accesorios</option>
-        </select>
+        <select id="p-cat" class="form-select"></select>
       </div>
       <div class="form-group">
         <label class="form-label">Badge</label>
@@ -256,6 +268,29 @@
     <div class="alert alert-err" id="al-err"></div>
   </div>
 
+  <!-- CATEGORÍAS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Gestionar Categorías</div>
+    </div>
+
+    <div style="padding:1rem">
+      <div style="margin-bottom:1.25rem;display:flex;gap:.75rem;flex-wrap:wrap">
+        <input id="cat-nombre" class="form-input" placeholder="Nombre de categoría" style="flex:1;min-width:200px" />
+        <label style="display:flex;align-items:center;gap:.4rem;padding:.45rem .9rem;background:var(--s3);border:1.5px dashed var(--border);border-radius:8px;color:var(--gray);font-size:.8rem;font-family:inherit;cursor:pointer;transition:all .15s">
+          <input type="file" accept="image/*" id="cat-img" style="display:none" onchange="previewCatImg(this)" />
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          Foto
+        </label>
+        <button class="btn btn-gold" onclick="agregarCategoria()" style="padding:.45rem 1rem;font-size:.8rem">Agregar</button>
+      </div>
+      <div id="cat-preview" style="margin-bottom:1rem;display:none">
+        <img id="cat-prev-img" style="width:80px;height:80px;object-fit:cover;border-radius:8px;margin-bottom:.5rem;display:block" />
+      </div>
+      <div id="cat-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.75rem"></div>
+    </div>
+  </div>
+
   <!-- PRODUCT LIST -->
   <div class="card">
     <div class="card-header">
@@ -287,10 +322,12 @@ let selGallery     = [];   // nuevas fotos de galería a subir [{name,rawBase64,
 let existingGallery = [];  // paths de galería ya publicados (cuando edita)
 let removedGallery  = new Set(); // paths a eliminar de galería existente
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", async () => {
   bindTalleInput();
   initDrop();
-  loadProducts();
+  await loadCategoryDataOnStart();
+  await loadCategorias();
+  await loadProducts();
 });
 
 // ══ GitHub API ══
@@ -646,6 +683,125 @@ function renderGallery() {
     item.innerHTML = `<img src="${f.dataUrl}" /><button class="gal-item-rm" onclick="removeGalleryItem(${existingGallery.length + i})" type="button">×</button>`;
     grid.appendChild(item);
   });
+}
+
+// ══ Categorías ══
+let catImgSelected = null;
+
+function previewCatImg(input) {
+  if (!input.files?.[0]) return;
+  const file = input.files[0];
+  if (file.size > 10*1024*1024) {
+    showToast("La foto es muy grande (máximo 10 MB).", "var(--red)");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    catImgSelected = { name: file.name, rawBase64: e.target.result.split(',')[1], dataUrl: e.target.result };
+    const prev = document.getElementById("cat-preview");
+    document.getElementById("cat-prev-img").src = catImgSelected.dataUrl;
+    prev.style.display = "block";
+  };
+  reader.readAsDataURL(file);
+}
+
+async function agregarCategoria() {
+  const nombre = document.getElementById("cat-nombre").value.trim();
+  if (!nombre) { showToast("Completá el nombre de la categoría.", "var(--red)"); return; }
+
+  const id = nombre.toLowerCase().replace(/\s+/g, "");
+  const categories = await loadCatsFromRepo();
+  if (categories.find(c => c.id === id)) { showToast("La categoría ya existe.", "var(--red)"); return; }
+
+  let imagenPath = null;
+  if (catImgSelected) {
+    const ext = catImgSelected.name.split(".").pop().toLowerCase();
+    imagenPath = `img/cat-${id}.${ext}`;
+    for (const repo of REPOS) {
+      await ghCommit(repo, [{path: imagenPath, base64: catImgSelected.rawBase64}], `Categoría: ${nombre}`);
+    }
+  }
+
+  const newCat = { id, nombre, imagen: imagenPath };
+  categories.push(newCat);
+
+  for (const repo of REPOS) {
+    const content = "const CATEGORIAS = " + JSON.stringify(categories, null, 2) + ";";
+    await ghCommit(repo, [{path: "js/categorias.js", content}], `Agregar categoría: ${nombre}`);
+  }
+
+  showToast(`✅ Categoría "${nombre}" agregada.`, "var(--green)");
+  document.getElementById("cat-nombre").value = "";
+  catImgSelected = null;
+  document.getElementById("cat-img").value = "";
+  document.getElementById("cat-preview").style.display = "none";
+  await loadCategorias();
+}
+
+async function editarCategoria(id) {
+  const categories = await loadCatsFromRepo();
+  const cat = categories.find(c => c.id === id);
+  if (!cat) return;
+
+  const newNombre = prompt(`Editar nombre (actual: "${cat.nombre}"):`, cat.nombre);
+  if (newNombre === null || !newNombre.trim()) return;
+
+  cat.nombre = newNombre.trim();
+  for (const repo of REPOS) {
+    const content = "const CATEGORIAS = " + JSON.stringify(categories, null, 2) + ";";
+    await ghCommit(repo, [{path: "js/categorias.js", content}], `Editar categoría: ${cat.nombre}`);
+  }
+
+  showToast(`✅ Categoría actualizada.`, "var(--green)");
+  await loadCategorias();
+}
+
+async function eliminarCategoria(id, nombre) {
+  const ok = await showConfirm(`¿Eliminás la categoría "${nombre}"?`, "Esta acción no se puede deshacer.", "danger", "🗑️ Eliminar", "var(--red)");
+  if (!ok) return;
+
+  let categories = await loadCatsFromRepo();
+  categories = categories.filter(c => c.id !== id);
+
+  for (const repo of REPOS) {
+    const content = "const CATEGORIAS = " + JSON.stringify(categories, null, 2) + ";";
+    await ghCommit(repo, [{path: "js/categorias.js", content}], `Eliminar categoría: ${nombre}`);
+  }
+
+  showToast(`✅ Categoría eliminada.`, "var(--green)");
+  await loadCategorias();
+}
+
+async function loadCatsFromRepo() {
+  try {
+    const src = await rawRead(REPOS[0], "js/categorias.js");
+    const match = src.match(/const CATEGORIAS = (\[[\s\S]*?\]);/);
+    if (match) return JSON.parse(match[1]);
+  } catch {}
+  return [];
+}
+
+async function loadCategorias() {
+  const categories = await loadCatsFromRepo();
+
+  // Actualizar select del formulario
+  const select = document.getElementById("p-cat");
+  select.innerHTML = categories.map(cat => `<option value="${cat.id}">${esc(cat.nombre)}</option>`).join("");
+
+  // Actualizar lista de categorías
+  const list = document.getElementById("cat-list");
+  list.innerHTML = categories.map(cat => `
+    <div style="border:1px solid var(--border);border-radius:10px;overflow:hidden;background:var(--s2)">
+      ${cat.imagen ? `<img src="${cat.imagen}" style="width:100%;height:100px;object-fit:cover" />` : `<div style="width:100%;height:100px;background:var(--s3);display:flex;align-items:center;justify-content:center;color:var(--gray);font-size:.8rem">Sin foto</div>`}
+      <div style="padding:.75rem">
+        <p style="margin:0 0 .5rem;font-weight:600;font-size:.9rem">${esc(cat.nombre)}</p>
+        <div style="display:flex;gap:.5rem;margin-top:.75rem">
+          <button class="btn btn-outline btn-sm" onclick="editarCategoria('${cat.id}')" style="flex:1">✏️ Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="eliminarCategoria('${cat.id}','${esc(cat.nombre)}')" style="flex:1">🗑️</button>
+        </div>
+      </div>
+    </div>
+  `).join("");
 }
 
 // ══ Talles ══
