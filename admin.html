@@ -275,6 +275,14 @@ loadCategoryDataOnStart();
     </div>
 
     <div style="padding:1rem">
+      <div style="margin-bottom:1.5rem;padding:.75rem;background:var(--s3);border-radius:8px;border-left:3px solid var(--gold)">
+        <label style="display:block;font-size:.8rem;color:var(--gray);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em">Handle de Instagram</label>
+        <div style="display:flex;gap:.5rem">
+          <input id="instagram-handle" type="text" class="form-input" placeholder="@nombredeinstagram" style="flex:1" />
+          <button class="btn btn-gold" onclick="saveInstagramHandle()" style="padding:.45rem 1rem;font-size:.8rem">Guardar</button>
+        </div>
+        <p style="font-size:.75rem;color:var(--gray);margin-top:.5rem">💡 Se mostrará en la sección de Instagram de la home</p>
+      </div>
       <div style="margin-bottom:1.25rem;display:flex;gap:.75rem;flex-wrap:wrap">
         <input id="cat-nombre" class="form-input" placeholder="Nombre de categoría" style="flex:1;min-width:200px" />
         <label style="display:flex;align-items:center;gap:.4rem;padding:.45rem .9rem;background:var(--s3);border:1.5px dashed var(--border);border-radius:8px;color:var(--gray);font-size:.8rem;font-family:inherit;cursor:pointer;transition:all .15s">
@@ -347,6 +355,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   await loadCategorias();
   await loadProducts();
   loadStats();
+  loadInstagramHandle();
 });
 
 // ══ GitHub API ══
@@ -843,6 +852,19 @@ async function loadCategorias() {
       </div>
     </div>
   `).join("");
+}
+
+// ══ Instagram ══
+function saveInstagramHandle() {
+  const handle = document.getElementById("instagram-handle").value.trim();
+  if (!handle) { showToast("Ingresá un handle de Instagram", "var(--red)"); return; }
+  localStorage.setItem("gp_instagram_handle", handle);
+  showToast("✅ Handle de Instagram guardado", "var(--green)");
+}
+
+function loadInstagramHandle() {
+  const handle = localStorage.getItem("gp_instagram_handle") || "@granprixropa";
+  document.getElementById("instagram-handle").value = handle;
 }
 
 // ══ Estadísticas ══

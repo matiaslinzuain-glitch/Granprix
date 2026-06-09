@@ -1023,6 +1023,24 @@ input, select { font-family: inherit; }
     </div>
   </section>
 
+  <!-- INSTAGRAM FEED -->
+  <section class="section" style="padding:4rem 0;background:var(--s2);border-top:1px solid var(--border)">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:3rem">
+        <p class="section-eyebrow">Síguenos en redes</p>
+        <h2 class="section-title font-display" style="margin:1rem 0">INSTAGRAM</h2>
+      </div>
+      <div id="instagram-feed" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem">
+        <div style="text-align:center;padding:3rem 1rem;color:var(--gray);font-size:.9rem">
+          <p>📱 Síguenos en Instagram para ver nuestras últimas colecciones</p>
+          <a href="https://instagram.com" target="_blank" class="btn btn-gold" style="margin-top:1rem;display:inline-block">
+            Ir a Instagram →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PICKUP BANNER -->
   <section class="pickup-section" id="section-contacto" class="section-alt">
     <div class="container">
@@ -2781,6 +2799,19 @@ function renderDetalle_spa(id) {
       window.addEventListener("load", function() { pageDone = true; tryHide(); });
     }
   })();
+  </script>
+
+  <script>
+    // Cargar handle de Instagram
+    document.addEventListener("DOMContentLoaded", () => {
+      const handle = localStorage.getItem("gp_instagram_handle") || "@granprixropa";
+      const instagramLink = document.querySelector("#instagram-feed a");
+      if (instagramLink) {
+        const cleanHandle = handle.replace("@", "");
+        instagramLink.href = `https://instagram.com/${cleanHandle}`;
+        instagramLink.textContent = `Seguir ${handle} →`;
+      }
+    });
   </script>
 </body>
 </html>
