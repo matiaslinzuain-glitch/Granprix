@@ -26,6 +26,12 @@
           <li><a href="contacto.html">Contacto</a></li>
         </ul>
         <div class="navbar-right">
+          <button class="cart-btn" onclick="Wishlist.open()" aria-label="Favoritos">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+            </svg>
+            <span id="wishlist-badge">0</span>
+          </button>
           <button class="cart-btn" onclick="Cart.open()" aria-label="Carrito">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
@@ -51,6 +57,7 @@
 
   <script src="js/data.js"></script>
   <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
   <script>
     function toggleMenu() {
       document.getElementById("hamburger").classList.toggle("open");
@@ -179,10 +186,15 @@
                     <div class="color-tags">${coloresHTML}</div>
                   </div>
 
-                  <!-- Agregar al carrito -->
-                  <button class="btn-gold btn-block" style="margin-bottom:.75rem" onclick="addToCart()">
-                    Agregar al carrito
-                  </button>
+                  <!-- Botones de acción -->
+                  <div style="display:flex;gap:.75rem;margin-bottom:.75rem">
+                    <button class="btn-gold" style="flex:1" onclick="addToCart()">
+                      Agregar al carrito
+                    </button>
+                    <button class="btn-outline" style="width:50px" id="wish-btn-detail" onclick="toggleFav()" title="Agregar a favoritos">
+                      ❤️
+                    </button>
+                  </div>
 
                   <!-- WhatsApp -->
                   <a href="https://api.whatsapp.com/send?phone=5491136196053&text=${encodeURIComponent("Hola! Quiero consultar por: " + p.nombre)}"
@@ -282,6 +294,22 @@
       window.addToCart = function() {
         Cart.add(p, selectedTalle);
       };
+
+      window.toggleFav = function() {
+        Wishlist.toggle(p);
+        updateWishBtnState();
+      };
+
+      function updateWishBtnState() {
+        const btn = document.getElementById("wish-btn-detail");
+        if (btn) {
+          const isFav = Wishlist.isFavorite(p.id);
+          btn.style.background = isFav ? "var(--gold)" : "transparent";
+          btn.style.color = isFav ? "#000" : "var(--gray)";
+          btn.style.borderColor = isFav ? "var(--gold)" : "var(--border)";
+        }
+      }
+      updateWishBtnState();
     }
 
     function addRipple(e) {
@@ -297,6 +325,7 @@
     document.querySelectorAll(".btn-gold,.btn-outline,.talle-btn,.cart-btn").forEach(el => el.addEventListener("click", addRipple));
     document.querySelectorAll(".add-btn").forEach(el => el.addEventListener("click", addRipple));
     injectCartDrawer();
+    injectWishlistDrawer();
   </script>
 </body>
 </html>
