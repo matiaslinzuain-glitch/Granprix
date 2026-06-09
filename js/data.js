@@ -11,6 +11,8 @@ const PRODUCTOS = [
     imagen: "img/lenadora-1.jpeg",
     galeria: ["img/lenadora-2.jpeg", "img/lenadora-3.jpeg", "img/lenadora-4.jpeg", "img/lenadora-5.jpeg", "img/lenadora-6.jpeg", "img/lenadora-7.jpeg"],
     descripcion: "Camisa leñadora clásica en franela, disponible en variedad de colores y cuadros. Cuello clásico, bolsillo en el pecho y manga larga. Del talle 38 al especial 50."
+  ,
+    stockAgotado: []
   },
   {
     id: "015",
@@ -24,6 +26,8 @@ const PRODUCTOS = [
     imagen: "img/camisa-manga-larga-1.jpeg",
     galeria: ["img/camisa-manga-larga-2.jpeg", "img/camisa-manga-larga-3.jpeg", "img/camisa-manga-larga-4.jpeg", "img/camisa-manga-larga-5.jpeg", "img/camisa-manga-larga-6.jpeg", "img/camisa-manga-larga-7.jpeg"],
     descripcion: "Camisa manga larga clásica disponible en gran variedad de colores. Cuello tradicional, botonera completa y bolsillo en el pecho. Del talle 38 al especial 52."
+  ,
+    stockAgotado: []
   },
   {
     id: "016",
@@ -37,6 +41,8 @@ const PRODUCTOS = [
     imagen: "img/camisa-estampada-2.jpeg",
     galeria: ["img/camisa-estampada-1.jpeg", "img/camisa-estampada-3.jpeg"],
     descripcion: "Camisa manga larga con estampados exclusivos. Cuello tradicional, botonera completa y bolsillo en el pecho. Del talle 38 al especial 52."
+  ,
+    stockAgotado: []
   },
   {
     id: "017",
@@ -50,6 +56,8 @@ const PRODUCTOS = [
     imagen: "img/elastizada-negra.jpeg",
     galeria: ["img/elastizada-blanca.jpeg", "img/elastizada-bordo.jpeg", "img/elastizada-colores.jpeg", "img/elastizada-pack1.jpeg", "img/elastizada-pack2.jpeg"],
     descripcion: "Camisa elastizada manga larga con excelente ajuste y comodidad. Disponible en negro, blanco, bordó y más colores. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "018",
@@ -63,6 +71,8 @@ const PRODUCTOS = [
     imagen: "img/cargo-jogging-1.jpeg",
     galeria: ["img/cargo-jogging-2.jpeg", "img/cargo-jogging-3.jpeg", "img/cargo-jogging-4.jpeg", "img/cargo-jogging-5.jpeg", "img/cargo-jogging-6.jpeg", "img/cargo-jogging-7.jpeg"],
     descripcion: "Pantalón jogging cargo disponible en varios colores. Cintura elástica, bolsillos cargo con cierre. Del talle 38 al especial 58."
+  ,
+    stockAgotado: []
   },
   {
     id: "019",
@@ -76,6 +86,8 @@ const PRODUCTOS = [
     imagen: "img/jogging-clasico-1.jpeg",
     galeria: ["img/jogging-clasico-2.jpeg", "img/jogging-clasico-3.jpeg", "img/jogging-clasico-4.jpeg", "img/jogging-clasico-5.jpeg"],
     descripcion: "Pantalón jogging clásico con bolsillos con cierre. Cintura elástica, corte recto. Del talle 38 al especial 58."
+  ,
+    stockAgotado: []
   },
   {
     id: "020",
@@ -89,6 +101,8 @@ const PRODUCTOS = [
     imagen: "img/jean-clasico-1.jpeg",
     galeria: ["img/jean-clasico-2.jpeg", "img/jean-clasico-3.jpeg", "img/jean-clasico-4.jpeg", "img/jean-clasico-5.jpeg", "img/jean-clasico-6.jpeg", "img/jean-clasico-7.jpeg", "img/jean-clasico-8.jpeg", "img/jean-clasico-9.jpeg", "img/jean-clasico-10.jpeg", "img/jean-clasico-11.jpeg", "img/jean-clasico-12.jpeg", "img/jean-clasico-13.jpeg", "img/jean-clasico-14.jpeg", "img/jean-clasico-15.jpeg", "img/jean-clasico-16.jpeg", "img/jean-clasico-17.jpeg", "img/jean-clasico-18.jpeg", "img/jean-clasico-19.jpeg", "img/jean-clasico-20.jpeg"],
     descripcion: "Pantalón jean clásico disponible en varios colores y lavados. Corte recto, 5 bolsillos. Del talle 38 al especial 60."
+  ,
+    stockAgotado: []
   },
   {
     id: "021",
@@ -102,6 +116,8 @@ const PRODUCTOS = [
     imagen: "img/jean-talle-especial-1.jpeg",
     galeria: [],
     descripcion: "Pantalón jean clásico en talles especiales. Disponible hasta talle 68."
+  ,
+    stockAgotado: []
   },
   {
     id: "022",
@@ -115,6 +131,8 @@ const PRODUCTOS = [
     imagen: "img/chino-negro-1.jpeg",
     galeria: ["img/chino-negro-2.jpeg"],
     descripcion: "Pantalón corte chino negro. Corte recto, bolsillos laterales. Del talle 38 al 52."
+  ,
+    stockAgotado: []
   },
   {
     id: "023",
@@ -128,6 +146,8 @@ const PRODUCTOS = [
     imagen: "img/chino-beige-1.jpeg",
     galeria: ["img/chino-beige-2.jpeg", "img/chino-beige-3.jpeg"],
     descripcion: "Pantalón corte chino beige. Corte recto, bolsillos laterales. Del talle 38 al 52."
+  ,
+    stockAgotado: []
   },
   {
     id: "024",
@@ -141,6 +161,8 @@ const PRODUCTOS = [
     imagen: "img/chino-camel-1.jpeg",
     galeria: ["img/chino-camel-2.jpeg", "img/chino-camel-3.jpeg", "img/chino-camel-4.jpeg"],
     descripcion: "Pantalón corte chino camel. Corte recto, bolsillos laterales. Del talle 38 al 52."
+  ,
+    stockAgotado: []
   },
   {
     id: "025",
@@ -154,6 +176,8 @@ const PRODUCTOS = [
     imagen: "img/jean-elastizado-1.jpeg",
     galeria: ["img/jean-elastizado-2.jpeg"],
     descripcion: "Jean elastizado negro. Ajuste cómodo y flexible. Del talle 38 al 52."
+  ,
+    stockAgotado: []
   },
   {
     id: "026",
@@ -167,6 +191,8 @@ const PRODUCTOS = [
     imagen: "img/chino-azul-negro-1.jpeg",
     galeria: [],
     descripcion: "Pantalón corte chino disponible en azul y negro. Corte recto, bolsillos laterales. Del talle 38 al 52."
+  ,
+    stockAgotado: []
   },
   {
     id: "027",
@@ -180,6 +206,8 @@ const PRODUCTOS = [
     imagen: "img/nautico-cargo-1.jpeg",
     galeria: ["img/nautico-cargo-2.jpeg", "img/nautico-cargo-3.jpeg", "img/nautico-cargo-4.jpeg", "img/nautico-cargo-5.jpeg"],
     descripcion: "Pantalón náutico cargo con múltiples bolsillos y cintura elástica. Del talle 38 al especial 68."
+  ,
+    stockAgotado: []
   },
   {
     id: "028",
@@ -193,6 +221,8 @@ const PRODUCTOS = [
     imagen: "img/mecano-tropical-1.jpeg",
     galeria: ["img/mecano-tropical-2.jpeg", "img/mecano-tropical-3.jpeg"],
     descripcion: "Pantalón de vestir mecano tropical. Corte clásico, tela liviana. Del talle 38 al especial 60."
+  ,
+    stockAgotado: []
   },
   {
     id: "029",
@@ -206,6 +236,8 @@ const PRODUCTOS = [
     imagen: "img/polera-lana-hilo-fb-2.png",
     galeria: ["img/polera-lana-hilo-fb-1.png", "img/polera-lana-hilo-2.jpeg", "img/polera-lana-hilo-3.jpeg", "img/polera-lana-hilo-4.jpeg"],
     descripcion: "Polera de lana de hilo, ¡no pica! Suave al tacto, ideal para el frío. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "030",
@@ -219,6 +251,8 @@ const PRODUCTOS = [
     imagen: "img/sueter-medio-cierre-fb-1.png",
     galeria: ["img/sueter-medio-cierre-fb-2.png", "img/sueter-medio-cierre-2.jpeg", "img/sueter-medio-cierre-3.jpeg", "img/sueter-medio-cierre-4.jpeg"],
     descripcion: "Suéter con medio cierre. Abrigado y cómodo, disponible en varios colores. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "031",
@@ -232,6 +266,8 @@ const PRODUCTOS = [
     imagen: "img/pulover-cuello-v-fb.png",
     galeria: ["img/pulover-cuello-v-1.jpeg", "img/pulover-cuello-v-2.jpeg", "img/pulover-cuello-v-3.jpeg"],
     descripcion: "Pulóver cuello V en talles especiales. Amplio rango de talles para mayor comodidad."
+  ,
+    stockAgotado: []
   },
   {
     id: "032",
@@ -245,6 +281,8 @@ const PRODUCTOS = [
     imagen: "img/campera-lana-1.jpeg",
     galeria: ["img/campera-lana-2.jpeg", "img/campera-lana-3.jpeg"],
     descripcion: "Campera de lana abrigada. Excelente calidad y terminación. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "033",
@@ -258,6 +296,8 @@ const PRODUCTOS = [
     imagen: "img/sueter-cuello-v-1.jpeg",
     galeria: ["img/sueter-cuello-v-2.jpeg", "img/sueter-cuello-v-3.jpeg", "img/sueter-cuello-v-4.jpeg"],
     descripcion: "Suéter cuello V clásico. Disponible en varios colores. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "034",
@@ -271,6 +311,8 @@ const PRODUCTOS = [
     imagen: "img/sueter-cuello-redondo-1.jpeg",
     galeria: ["img/sueter-cuello-redondo-2.jpeg", "img/sueter-cuello-redondo-3.jpeg"],
     descripcion: "Suéter cuello redondo clásico. Abrigado y versátil. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "035",
@@ -284,6 +326,8 @@ const PRODUCTOS = [
     imagen: "img/campera-lana-tramada-1.jpeg",
     galeria: [],
     descripcion: "Campera de lana tramada. Diseño exclusivo, muy abrigada. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "036",
@@ -297,6 +341,8 @@ const PRODUCTOS = [
     imagen: "img/pulover-cuello-v-4.jpeg",
     galeria: [],
     descripcion: "Pulóver cuello V disponible en gran variedad de tonos y colores. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "037",
@@ -310,6 +356,8 @@ const PRODUCTOS = [
     imagen: "img/campera-canguro-1.jpeg",
     galeria: ["img/campera-canguro-2.jpeg", "img/campera-canguro-3.jpeg", "img/campera-canguro-4.jpeg", "img/campera-canguro-5.jpeg", "img/campera-canguro-6.jpeg", "img/campera-canguro-7.jpeg"],
     descripcion: "Campera canguro frisado engomado en varios tonos. Bolsillo canguro, interior frisado, muy abrigada. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "038",
@@ -323,6 +371,8 @@ const PRODUCTOS = [
     imagen: "img/campera-cuero-ecologico-1.jpeg",
     galeria: [],
     descripcion: "Campera de cuero ecológico con piel interior. Elegante y muy abrigada. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "039",
@@ -336,6 +386,8 @@ const PRODUCTOS = [
     imagen: "img/campera-lana-botones-1.jpeg",
     galeria: [],
     descripcion: "Campera de lana con cierre de botones. Clásica y abrigada. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "040",
@@ -349,6 +401,8 @@ const PRODUCTOS = [
     imagen: "img/campera-puffer-1.jpeg",
     galeria: [],
     descripcion: "Campera puffer ultraabrigada. Disponible del talle S hasta talle especial."
+  ,
+    stockAgotado: []
   },
   {
     id: "041",
@@ -362,6 +416,8 @@ const PRODUCTOS = [
     imagen: "img/campera-abrigo-capucha-1.jpeg",
     galeria: [],
     descripcion: "Campera abrigo con capucha en azul o negro. Talles 2 al 6 (equivalente a talle 54)."
+  ,
+    stockAgotado: []
   },
   {
     id: "042",
@@ -375,6 +431,8 @@ const PRODUCTOS = [
     imagen: "img/campera-cuero-piel-1.jpeg",
     galeria: ["img/campera-cuero-piel-2.jpeg", "img/campera-cuero-piel-3.jpeg", "img/campera-cuero-piel-4.jpeg"],
     descripcion: "Campera de cuero con piel interior. Máximo abrigo y estilo. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "043",
@@ -388,6 +446,8 @@ const PRODUCTOS = [
     imagen: "img/campera-frisa-piel-1.jpeg",
     galeria: [],
     descripcion: "Campera de frisa con piel interior. Abrigada y cómoda. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "044",
@@ -401,6 +461,8 @@ const PRODUCTOS = [
     imagen: "img/campera-cierre-tramado-1.jpeg",
     galeria: [],
     descripcion: "Campera con cierre tramado. Diseño exclusivo y abrigado. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "045",
@@ -414,6 +476,8 @@ const PRODUCTOS = [
     imagen: "img/campera-chaleco-1.jpeg",
     galeria: ["img/campera-chaleco-2.jpeg"],
     descripcion: "Chaleco sin mangas impermeable. Liviano y funcional, disponible en talles especiales. Del talle S al 4XL."
+  ,
+    stockAgotado: []
   },
   {
     id: "046",
@@ -427,6 +491,8 @@ const PRODUCTOS = [
     imagen: "img/campera-lana-super-esp-1.jpeg",
     galeria: ["img/campera-lana-super-esp-2.jpeg"],
     descripcion: "Campera de lana hasta talle super especial. Del talle M hasta 7XL."
+  ,
+    stockAgotado: []
   },
   {
     id: "047",
@@ -440,6 +506,8 @@ const PRODUCTOS = [
     imagen: "img/campera-lana-hilo-c-1.jpeg",
     galeria: ["img/campera-lana-hilo-c-2.jpeg"],
     descripcion: "Campera de lana de hilo en varios tonos y colores. Del talle S al XXL."
+  ,
+    stockAgotado: []
   },
   {
     id: "048",
@@ -453,6 +521,8 @@ const PRODUCTOS = [
     imagen: "img/buzo-canguro-frisado-nuevo-1.jpeg",
     galeria: ["img/buzo-canguro-frisado-fb-1.png", "img/buzo-canguro-frisado-1.jpeg", "img/buzo-canguro-frisado-2.jpeg"],
     descripcion: "Buzo canguro frisado con frisa en pecho y espalda. Abrigado y cómodo. Talle 2 al 6."
+  ,
+    stockAgotado: []
   },
   {
     id: "049",
@@ -466,6 +536,8 @@ const PRODUCTOS = [
     imagen: "img/buzo-frisado-mc-1.jpeg",
     galeria: ["img/buzo-frisado-mc-2.jpeg", "img/buzo-frisado-mc-3.jpeg"],
     descripcion: "Buzo frisado con medio cierre. Disponible en varios colores. Talle 2 al 6."
+  ,
+    stockAgotado: []
   },
   {
     id: "050",
@@ -479,6 +551,8 @@ const PRODUCTOS = [
     imagen: "img/buzo-polar-mc-esp-1.jpeg",
     galeria: [],
     descripcion: "Buzo polar con medio cierre en talle especial. Talle 6 al 10."
+  ,
+    stockAgotado: []
   },
   {
     id: "051",
@@ -492,6 +566,8 @@ const PRODUCTOS = [
     imagen: "img/buzo-frisa-cr-1.jpeg",
     galeria: ["img/buzo-frisa-cr-2.jpeg"],
     descripcion: "Buzo de frisa cuello redondo, hay talle especial. Del talle 2 al 8."
+  ,
+    stockAgotado: []
   },
   {
     id: "052",
@@ -505,6 +581,8 @@ const PRODUCTOS = [
     imagen: "img/buzo-frisa-cr-esp-1.jpeg",
     galeria: ["img/buzo-frisa-cr-esp-2.jpeg", "img/buzo-frisa-cr-esp-3.jpeg"],
     descripcion: "Buzo de frisa cuello redondo en talle especial. Del talle 6 al 10."
+  ,
+    stockAgotado: []
   },
   {
     id: "053",
@@ -518,6 +596,8 @@ const PRODUCTOS = [
     imagen: "img/buzo-canguro-esp-1.jpeg",
     galeria: ["img/buzo-canguro-esp-2.jpeg"],
     descripcion: "Buzo canguro en talle especial. Del talle 6 al 10."
+  ,
+    stockAgotado: []
   },
   {
     id: "054",
@@ -531,6 +611,8 @@ const PRODUCTOS = [
     imagen: "img/buzo-polar-mc-vt-1.jpeg",
     galeria: ["img/buzo-polar-mc-vt-2.jpeg", "img/buzo-polar-mc-vt-3.jpeg"],
     descripcion: "Buzo polar con medio cierre en varios tonos y colores. Del talle 2 al 6."
+  ,
+    stockAgotado: []
   },
   {
     id: "055",
@@ -544,6 +626,8 @@ const PRODUCTOS = [
     imagen: "img/campera-polar-esp-1.jpeg",
     galeria: ["img/campera-polar-esp-2.jpeg", "img/campera-polar-esp-3.jpeg"],
     descripcion: "Campera polar en talle especial. Del talle 6 al 10."
+  ,
+    stockAgotado: []
   },
   {
     id: "056",
@@ -557,6 +641,8 @@ const PRODUCTOS = [
     imagen: "img/chaleco-vestir-fb.png",
     galeria: ["img/chaleco-vestir-1.jpeg", "img/chaleco-vestir-2.jpeg", "img/chaleco-vestir-3.jpeg"],
     descripcion: "Chaleco de vestir disponible en varios colores. Del talle 38 al 54."
+  ,
+    stockAgotado: []
   },
   {
     id: "057",
@@ -570,6 +656,8 @@ const PRODUCTOS = [
     imagen: "img/corbata-vestir-1.jpeg",
     galeria: ["img/corbata-vestir-2.jpeg", "img/corbata-vestir-3.jpeg", "img/corbata-vestir-4.jpeg", "img/corbata-vestir-5.jpeg", "img/corbata-vestir-6.jpeg"],
     descripcion: "Corbatas y corbatines de vestir en gran variedad de colores y diseños."
+  ,
+    stockAgotado: []
   },
   {
     id: "058",
@@ -583,6 +671,8 @@ const PRODUCTOS = [
     imagen: "img/mono-vestir-1.jpeg",
     galeria: ["img/mono-vestir-2.jpeg"],
     descripcion: "Moños de vestir para adultos y niños, en variedad de colores."
+  ,
+    stockAgotado: []
   },
   {
     id: "059",
@@ -596,6 +686,8 @@ const PRODUCTOS = [
     imagen: "img/tirador-vestir-1.jpeg",
     galeria: ["img/tirador-vestir-2.jpeg"],
     descripcion: "Tiradores en gran variedad de tonos y colores."
+  ,
+    stockAgotado: []
   },
   {
     id: "060",
@@ -609,6 +701,8 @@ const PRODUCTOS = [
     imagen: "img/travacorbata-1.jpeg",
     galeria: [],
     descripcion: "Travacorbatas de vestir en varios colores y diseños."
+  ,
+    stockAgotado: []
   },
   {
     id: "061",
@@ -622,6 +716,8 @@ const PRODUCTOS = [
     imagen: "img/camperon-forrado-piel-1.jpeg",
     galeria: [],
     descripcion: "Camperón forrado con piel. Abrigado y elegante. Del talle S al XXL."
+  ,
+    stockAgotado: []
   }
 ,
   {
@@ -636,6 +732,8 @@ const PRODUCTOS = [
     imagen: "img/campera-frisa-piel-1.jpeg",
     galeria: [],
     descripcion: "Campera de frisa con piel interior. Abrigada y cómoda. Del talle S al XXL."
+  ,
+    stockAgotado: []
   }
 
 ];

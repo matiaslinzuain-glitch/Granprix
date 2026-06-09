@@ -665,6 +665,8 @@ input, select { font-family: inherit; }
 }
 .talle-btn:hover { border-color: var(--gold); color: var(--white); }
 .talle-btn.selected { background: var(--gold); color: #000; border-color: var(--gold); }
+.talle-btn:disabled { opacity: 0.5; cursor: not-allowed; color: var(--gray); }
+.talle-btn:disabled:hover { border-color: var(--border); }
 .colores-section { margin-bottom: 2rem; }
 .colores-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; }
 .color-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }

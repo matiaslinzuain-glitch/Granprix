@@ -86,9 +86,11 @@
            <span class="discount-tag">${Math.round((1 - p.precio / p.precioAnterior) * 100)}% OFF</span>`
         : "";
 
-      const tallesHTML = p.talles.map(t =>
-        `<button class="talle-btn${t === selectedTalle ? " selected" : ""}" data-talle="${t}" onclick="selectTalle('${t}')">${t}</button>`
-      ).join("");
+      const agotados = p.stockAgotado || [];
+      const tallesHTML = p.talles.map(t => {
+        const isAgotado = agotados.includes(t);
+        return `<button class="talle-btn${t === selectedTalle ? " selected" : ""}${isAgotado ? " disabled" : ""}" data-talle="${t}" onclick="selectTalle('${t}')" ${isAgotado ? "disabled" : ""}>${t}${isAgotado ? ' (agotado)' : ''}</button>`;
+      }).join("");
 
       const coloresHTML = p.colores.map(c => `<span class="color-tag">${c}</span>`).join("");
 
