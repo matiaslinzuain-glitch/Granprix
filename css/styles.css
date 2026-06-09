@@ -453,7 +453,7 @@ input, select { font-family: inherit; }
   color: #fff !important;
 }
 .wish-btn:hover { background: rgba(0,0,0,0.8) !important; }
-.wish-btn.active { background: var(--gold) !important; color: #000 !important; }
+.wish-btn.active { background: rgba(0,0,0,0.6) !important; color: #fff !important; }
 .product-card-body { padding: 1rem; }
 .product-cat { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
 .product-name { font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; transition: color 0.2s; }
