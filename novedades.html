@@ -75,6 +75,34 @@
     </div>
   </div>
 
+  <!-- BÚSQUEDA Y FILTROS -->
+  <section class="section" style="padding:2rem 0;border-bottom:1px solid var(--border)">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;@media(max-width:768px){grid-template-columns:1fr}">
+        <div>
+          <label style="display:block;font-size:.8rem;color:var(--gray);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em">Buscar</label>
+          <input id="search-input" type="text" class="form-input" placeholder="Nombre del producto..." onkeyup="applyFilters()" />
+        </div>
+        <div>
+          <label style="display:block;font-size:.8rem;color:var(--gray);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em">Talle</label>
+          <select id="talle-filter" class="form-select" onchange="applyFilters()">
+            <option value="">Todos los talles</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:.8rem;color:var(--gray);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em">Rango de precio</label>
+          <select id="price-filter" class="form-select" onchange="applyFilters()">
+            <option value="">Todos los precios</option>
+            <option value="0-50000">Hasta $50.000</option>
+            <option value="50000-100000">$50.000 - $100.000</option>
+            <option value="100000-150000">$100.000 - $150.000</option>
+            <option value="150000-999999">Más de $150.000</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- GRILLA -->
   <section class="section">
     <div class="container">
@@ -149,42 +177,83 @@
     const BASE = PRODUCTOS.filter(p => p.badge === "nuevo" || p.badge === "oferta");
     let activeCat = "todo";
     let activeSort = "default";
+    let searchTerm = "";
+    let selectedTalle = "";
+    let selectedPrice = "";
 
-    function renderGrid() {
-      let items = activeCat === "todo" ? [...BASE] : BASE.filter(p => p.categoria === activeCat);
+    // Poblar talles únicos
+    const allTalles = [...new Set(BASE.flatMap(p => p.talles))].sort();
+    const talleSelect = document.getElementById("talle-filter");
+    allTalles.forEach(t => {
+      const opt = document.createElement("option");
+      opt.value = t;
+      opt.textContent = t;
+      talleSelect.appendChild(opt);
+    });
+
+    function applyFilters() {
+      searchTerm = document.getElementById("search-input").value.toLowerCase();
+      selectedTalle = document.getElementById("talle-filter").value;
+      selectedPrice = document.getElementById("price-filter").value;
+
+      let items = BASE.filter(p => {
+        if (activeCat !== "todo" && p.categoria !== activeCat) return false;
+        if (searchTerm && !p.nombre.toLowerCase().includes(searchTerm)) return false;
+        if (selectedTalle && !p.talles.includes(selectedTalle)) return false;
+        if (selectedPrice) {
+          const [min, max] = selectedPrice.split("-").map(Number);
+          if (p.precio < min || p.precio > max) return false;
+        }
+        return true;
+      });
+
       if (activeSort === "precio-asc") items.sort((a,b) => a.precio - b.precio);
       if (activeSort === "precio-desc") items.sort((a,b) => b.precio - a.precio);
+
       const grid = document.getElementById("nov-grid");
       const noRes = document.getElementById("no-results");
-      if (items.length === 0) { grid.innerHTML = ""; noRes.style.display = "block"; return; }
+      if (items.length === 0) {
+        grid.innerHTML = "";
+        noRes.style.display = "block";
+        noRes.textContent = searchTerm ? "No se encontraron productos" : "No hay novedades en esta categoría";
+        return;
+      }
       noRes.style.display = "none";
-      grid.innerHTML = items.map(p => {
-        const badge = p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge}</span>` : "";
-        const oldPrice = p.precioAnterior ? `<span class="product-price-old">${formatPrice(p.precioAnterior)}</span>` : "";
-        const talles = p.talles.slice(0,4).map(t => `<span class="talle-tag">${t}</span>`).join("");
-        const imgHTML = p.imagen
-          ? `<img src="${p.imagen}" alt="${p.nombre}" loading="lazy">`
-          : `<div class="placeholder-img"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="0.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6v14h12V6M3 6l3-3 3 3M18 6l3-3-3-3"/></svg><span>${p.nombre}</span></div>`;
-        return `
-          <a href="producto.html?id=${p.id}" class="product-card">
-            <div class="product-card-img">
-              ${imgHTML}
-              ${badge}
+      grid.innerHTML = items.map(p => renderProductCard(p)).join("");
+    }
+
+    function renderProductCard(p) {
+      const badge = p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge}</span>` : "";
+      const oldPrice = p.precioAnterior ? `<span class="product-price-old">${formatPrice(p.precioAnterior)}</span>` : "";
+      const talles = p.talles.slice(0,4).map(t => `<span class="talle-tag">${t}</span>`).join("");
+      const imgHTML = p.imagen
+        ? `<img src="${p.imagen}" alt="${p.nombre}" loading="lazy">`
+        : `<div class="placeholder-img"><svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="0.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6v14h12V6M3 6l3-3 3 3M18 6l3-3-3-3"/></svg><span>${p.nombre}</span></div>`;
+      const isFav = window.Wishlist && Wishlist.isFavorite(p.id);
+      return `
+        <a href="producto.html?id=${p.id}" class="product-card">
+          <div class="product-card-img">
+            ${imgHTML}
+            ${badge}
+            <div style="display:flex;gap:.5rem;position:absolute;top:.75rem;right:.75rem">
+              <button class="add-btn wish-btn ${isFav?'active':''}" onclick="event.preventDefault();event.stopPropagation();Wishlist.toggle(PRODUCTOS.find(x=>x.id==='${p.id}'))" aria-label="Favorito" title="Agregar a favoritos">
+                <svg width="18" height="18" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              </button>
               <button class="add-btn" onclick="event.preventDefault();Cart.add(PRODUCTOS.find(x=>x.id==='${p.id}'),'${p.talles[0]}')" aria-label="Agregar">
                 <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
               </button>
             </div>
-            <div class="product-card-body">
-              <p class="product-cat">${p.categoria}</p>
-              <p class="product-name">${p.nombre}</p>
-              <div class="product-talles">${talles}</div>
-              <div class="product-prices">
-                <span class="product-price">${formatPrice(p.precio)}</span>
-                ${oldPrice}
-              </div>
+          </div>
+          <div class="product-card-body">
+            <p class="product-cat">${p.categoria}</p>
+            <p class="product-name">${p.nombre}</p>
+            <div class="product-talles">${talles}</div>
+            <div class="product-prices">
+              <span class="product-price">${formatPrice(p.precio)}</span>
+              ${oldPrice}
             </div>
-          </a>`;
-      }).join("");
+          </div>
+        </a>`;
     }
 
     document.querySelectorAll("#nov-filters .filter-btn").forEach(btn => {
@@ -192,10 +261,10 @@
         activeCat = btn.dataset.cat;
         document.querySelectorAll("#nov-filters .filter-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        renderGrid();
+        applyFilters();
       });
     });
-    document.getElementById("nov-sort").addEventListener("change", e => { activeSort = e.target.value; renderGrid(); });
+    document.getElementById("nov-sort").addEventListener("change", e => { activeSort = e.target.value; applyFilters(); });
 
     function addRipple(e) {
       const el = e.currentTarget;
@@ -215,7 +284,7 @@
 
     injectCartDrawer();
     injectWishlistDrawer();
-    renderGrid();
+    applyFilters();
   </script>
 </body>
 </html>

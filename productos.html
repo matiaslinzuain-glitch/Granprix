@@ -61,6 +61,34 @@
     </div>
   </div>
 
+  <!-- BÚSQUEDA Y FILTROS AVANZADOS -->
+  <section class="section" style="padding:2rem 0;border-bottom:1px solid var(--border)">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;@media(max-width:768px){grid-template-columns:1fr}">
+        <div>
+          <label style="display:block;font-size:.8rem;color:var(--gray);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em">Buscar</label>
+          <input id="search-input" type="text" class="form-input" placeholder="Nombre del producto..." onkeyup="applyFilters()" />
+        </div>
+        <div>
+          <label style="display:block;font-size:.8rem;color:var(--gray);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em">Talle</label>
+          <select id="talle-filter" class="form-select" onchange="applyFilters()">
+            <option value="">Todos los talles</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:.8rem;color:var(--gray);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.1em">Rango de precio</label>
+          <select id="price-filter" class="form-select" onchange="applyFilters()">
+            <option value="">Todos los precios</option>
+            <option value="0-50000">Hasta $50.000</option>
+            <option value="50000-100000">$50.000 - $100.000</option>
+            <option value="100000-150000">$100.000 - $150.000</option>
+            <option value="150000-999999">Más de $150.000</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- GRILLA -->
   <section class="section">
     <div class="container">
@@ -191,7 +219,60 @@
         </a>`;
     }
 
-    // Filtros
+    // Variables de filtro
+    let searchTerm = "";
+    let selectedTalle = "";
+    let selectedPrice = "";
+
+    // Poblar talles únicos
+    const allTalles = [...new Set(PRODUCTOS.flatMap(p => p.talles))].sort();
+    const talleSelect = document.getElementById("talle-filter");
+    allTalles.forEach(t => {
+      const opt = document.createElement("option");
+      opt.value = t;
+      opt.textContent = t;
+      talleSelect.appendChild(opt);
+    });
+
+    // Función de filtrado combinado
+    function applyFilters() {
+      searchTerm = document.getElementById("search-input").value.toLowerCase();
+      selectedTalle = document.getElementById("talle-filter").value;
+      selectedPrice = document.getElementById("price-filter").value;
+
+      let items = PRODUCTOS.filter(p => {
+        // Filtro por categoría
+        if (activeCat !== "todo" && p.categoria !== activeCat) return false;
+        // Filtro por búsqueda
+        if (searchTerm && !p.nombre.toLowerCase().includes(searchTerm)) return false;
+        // Filtro por talle
+        if (selectedTalle && !p.talles.includes(selectedTalle)) return false;
+        // Filtro por precio
+        if (selectedPrice) {
+          const [min, max] = selectedPrice.split("-").map(Number);
+          if (p.precio < min || p.precio > max) return false;
+        }
+        return true;
+      });
+
+      // Aplicar sort
+      if (activeSort === "precio-asc") items.sort((a,b) => a.precio - b.precio);
+      if (activeSort === "precio-desc") items.sort((a,b) => b.precio - a.precio);
+      if (activeSort === "nuevo") items.sort(a => a.badge === "nuevo" ? -1 : 1);
+
+      const grid = document.getElementById("prod-grid");
+      const noRes = document.getElementById("no-results");
+      if (items.length === 0) {
+        grid.innerHTML = "";
+        noRes.style.display = "block";
+        noRes.textContent = searchTerm ? "No se encontraron productos" : "No hay productos en esta categoría";
+        return;
+      }
+      noRes.style.display = "none";
+      grid.innerHTML = items.map(p => productCardHTML(p)).join("");
+    }
+
+    // Filtros de categoría
     const filterBtns = document.querySelectorAll("#prod-filters .filter-btn");
     filterBtns.forEach(btn => {
       if (btn.dataset.cat === activeCat) btn.classList.add("active");
@@ -200,13 +281,13 @@
         activeCat = btn.dataset.cat;
         filterBtns.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        renderGrid();
+        applyFilters();
       });
     });
 
     document.getElementById("prod-sort").addEventListener("change", e => {
       activeSort = e.target.value;
-      renderGrid();
+      applyFilters();
     });
 
     function addRipple(e) {
@@ -227,7 +308,7 @@
 
     injectCartDrawer();
     injectWishlistDrawer();
-    renderGrid();
+    applyFilters();
   </script>
 </body>
 </html>
