@@ -827,3 +827,27 @@ function isNew(product) {
   const daysOld = (today - createdDate) / (1000 * 60 * 60 * 24);
   return daysOld <= 30;
 }
+
+// ── Estadísticas de productos (localStorage)
+function trackProductView(id) {
+  const stats = JSON.parse(localStorage.getItem("gp_stats") || "{}");
+  if (!stats[id]) stats[id] = { views: 0, clicks: 0 };
+  stats[id].views++;
+  localStorage.setItem("gp_stats", JSON.stringify(stats));
+}
+
+function trackProductClick(id) {
+  const stats = JSON.parse(localStorage.getItem("gp_stats") || "{}");
+  if (!stats[id]) stats[id] = { views: 0, clicks: 0 };
+  stats[id].clicks++;
+  localStorage.setItem("gp_stats", JSON.stringify(stats));
+}
+
+function getProductStats(id) {
+  const stats = JSON.parse(localStorage.getItem("gp_stats") || "{}");
+  return stats[id] || { views: 0, clicks: 0 };
+}
+
+function getAllStats() {
+  return JSON.parse(localStorage.getItem("gp_stats") || "{}");
+}

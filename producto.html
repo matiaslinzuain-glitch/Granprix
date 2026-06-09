@@ -66,6 +66,7 @@
 
     const id = new URLSearchParams(window.location.search).get("id");
     const p = getProductById(id);
+    if (p) trackProductView(id);
     const content = document.getElementById("page-content");
 
     if (!p) {

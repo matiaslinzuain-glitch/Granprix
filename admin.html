@@ -291,6 +291,24 @@ loadCategoryDataOnStart();
     </div>
   </div>
 
+  <!-- ESTADÍSTICAS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📊 Estadísticas de productos</div>
+    </div>
+    <div style="padding:1.5rem">
+      <div style="margin-bottom:2rem">
+        <h3 style="font-size:.95rem;font-weight:600;margin-bottom:1rem;color:var(--gold)">🔥 Más vistos</h3>
+        <div id="top-viewed" style="display:grid;gap:.75rem"></div>
+      </div>
+      <div>
+        <h3 style="font-size:.95rem;font-weight:600;margin-bottom:1rem;color:var(--gold)">🛒 Más clickeados (agregados al carrito)</h3>
+        <div id="top-clicked" style="display:grid;gap:.75rem"></div>
+      </div>
+      <button class="btn btn-outline" onclick="localStorage.removeItem('gp_stats');location.reload()" style="margin-top:1.5rem;width:100%">🔄 Limpiar estadísticas</button>
+    </div>
+  </div>
+
   <!-- PRODUCT LIST -->
   <div class="card">
     <div class="card-header">
@@ -328,6 +346,7 @@ window.addEventListener("DOMContentLoaded", async () => {
   await loadCategoryDataOnStart();
   await loadCategorias();
   await loadProducts();
+  loadStats();
 });
 
 // ══ GitHub API ══
@@ -824,6 +843,43 @@ async function loadCategorias() {
       </div>
     </div>
   `).join("");
+}
+
+// ══ Estadísticas ══
+function loadStats() {
+  const stats = getAllStats();
+  const products = PRODUCTOS || [];
+
+  // Top vistos
+  const viewedList = Object.entries(stats)
+    .map(([id, stat]) => ({ id, ...stat, product: products.find(p => p.id === id) }))
+    .filter(x => x.product)
+    .sort((a, b) => b.views - a.views)
+    .slice(0, 5);
+
+  const viewedHtml = viewedList.length ? viewedList.map(x => `
+    <div style="padding:.75rem;background:var(--s2);border-radius:8px;border-left:3px solid var(--gold)">
+      <p style="margin:0;font-weight:600;font-size:.9rem">${esc(x.product.nombre)}</p>
+      <p style="margin:.25rem 0 0;font-size:.8rem;color:var(--gray)">👁️ ${x.views} vistas · 🛒 ${x.clicks} clicks</p>
+    </div>
+  `).join("") : '<p style="color:var(--gray);font-size:.85rem">Sin datos</p>';
+
+  // Top clickeados
+  const clickedList = Object.entries(stats)
+    .map(([id, stat]) => ({ id, ...stat, product: products.find(p => p.id === id) }))
+    .filter(x => x.product && x.clicks > 0)
+    .sort((a, b) => b.clicks - a.clicks)
+    .slice(0, 5);
+
+  const clickedHtml = clickedList.length ? clickedList.map(x => `
+    <div style="padding:.75rem;background:var(--s2);border-radius:8px;border-left:3px solid var(--gold)">
+      <p style="margin:0;font-weight:600;font-size:.9rem">${esc(x.product.nombre)}</p>
+      <p style="margin:.25rem 0 0;font-size:.8rem;color:var(--gray)">🛒 ${x.clicks} clicks · 👁️ ${x.views} vistas</p>
+    </div>
+  `).join("") : '<p style="color:var(--gray);font-size:.85rem">Sin datos</p>';
+
+  document.getElementById("top-viewed").innerHTML = viewedHtml;
+  document.getElementById("top-clicked").innerHTML = clickedHtml;
 }
 
 // ══ Talles ══
