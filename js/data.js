@@ -1,6 +1,7 @@
 const PRODUCTOS = [
   {
     id: "014",
+    fechaCreacion: "2026-06-09",
     nombre: "Camisa Leñadora Clásica",
     categoria: "camisas",
     precio: 28000,
@@ -16,6 +17,7 @@ const PRODUCTOS = [
   },
   {
     id: "015",
+    fechaCreacion: "2026-06-09",
     nombre: "Camisa Manga Larga Clásica",
     categoria: "camisas",
     precio: 30000,
@@ -31,6 +33,7 @@ const PRODUCTOS = [
   },
   {
     id: "016",
+    fechaCreacion: "2026-06-09",
     nombre: "Camisa Estampada Clásica",
     categoria: "camisas",
     precio: 30000,
@@ -46,6 +49,7 @@ const PRODUCTOS = [
   },
   {
     id: "017",
+    fechaCreacion: "2026-06-09",
     nombre: "Camisa Elastizada",
     categoria: "camisas",
     precio: 28000,
@@ -61,6 +65,7 @@ const PRODUCTOS = [
   },
   {
     id: "018",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Jogging Cargo",
     categoria: "pantalones",
     precio: 45000,
@@ -76,6 +81,7 @@ const PRODUCTOS = [
   },
   {
     id: "019",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Jogging Clásico",
     categoria: "pantalones",
     precio: 40000,
@@ -91,6 +97,7 @@ const PRODUCTOS = [
   },
   {
     id: "020",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Jean Clásico",
     categoria: "pantalones",
     precio: 45000,
@@ -106,6 +113,7 @@ const PRODUCTOS = [
   },
   {
     id: "021",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Jean Clásico Talle Especial",
     categoria: "pantalones",
     precio: 65000,
@@ -121,6 +129,7 @@ const PRODUCTOS = [
   },
   {
     id: "022",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Corte Chino Negro",
     categoria: "pantalones",
     precio: 50000,
@@ -136,6 +145,7 @@ const PRODUCTOS = [
   },
   {
     id: "023",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Corte Chino Beige",
     categoria: "pantalones",
     precio: 50000,
@@ -151,6 +161,7 @@ const PRODUCTOS = [
   },
   {
     id: "024",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Corte Chino Camel",
     categoria: "pantalones",
     precio: 50000,
@@ -166,6 +177,7 @@ const PRODUCTOS = [
   },
   {
     id: "025",
+    fechaCreacion: "2026-06-09",
     nombre: "Jean Elastizado Negro",
     categoria: "pantalones",
     precio: 50000,
@@ -181,6 +193,7 @@ const PRODUCTOS = [
   },
   {
     id: "026",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Corte Chino Azul y Negro",
     categoria: "pantalones",
     precio: 50000,
@@ -196,6 +209,7 @@ const PRODUCTOS = [
   },
   {
     id: "027",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Náutico Cargo",
     categoria: "pantalones",
     precio: 45000,
@@ -211,6 +225,7 @@ const PRODUCTOS = [
   },
   {
     id: "028",
+    fechaCreacion: "2026-06-09",
     nombre: "Pantalón Vestir Mecano Tropical",
     categoria: "pantalones",
     precio: 40000,
@@ -226,6 +241,7 @@ const PRODUCTOS = [
   },
   {
     id: "029",
+    fechaCreacion: "2026-06-09",
     nombre: "Polera Lana de Hilo",
     categoria: "sueters",
     precio: 30000,
@@ -241,6 +257,7 @@ const PRODUCTOS = [
   },
   {
     id: "030",
+    fechaCreacion: "2026-06-09",
     nombre: "Suéter Medio Cierre",
     categoria: "sueters",
     precio: 30000,
@@ -256,6 +273,7 @@ const PRODUCTOS = [
   },
   {
     id: "031",
+    fechaCreacion: "2026-06-09",
     nombre: "Pulóver Cuello V Talle Especial",
     categoria: "sueters",
     precio: 50000,
@@ -271,6 +289,7 @@ const PRODUCTOS = [
   },
   {
     id: "032",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera de Lana",
     categoria: "sueters",
     precio: 35000,
@@ -286,6 +305,7 @@ const PRODUCTOS = [
   },
   {
     id: "033",
+    fechaCreacion: "2026-06-09",
     nombre: "Suéter Cuello V",
     categoria: "sueters",
     precio: 35000,
@@ -301,6 +321,7 @@ const PRODUCTOS = [
   },
   {
     id: "034",
+    fechaCreacion: "2026-06-09",
     nombre: "Suéter Cuello Redondo",
     categoria: "sueters",
     precio: 35000,
@@ -316,6 +337,7 @@ const PRODUCTOS = [
   },
   {
     id: "035",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera de Lana Tramada",
     categoria: "sueters",
     precio: 40000,
@@ -331,6 +353,7 @@ const PRODUCTOS = [
   },
   {
     id: "036",
+    fechaCreacion: "2026-06-09",
     nombre: "Pulóver Cuello V Varios Tonos",
     categoria: "sueters",
     precio: 38000,
@@ -346,6 +369,7 @@ const PRODUCTOS = [
   },
   {
     id: "037",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Canguro Frisado Engomado",
     categoria: "camperas",
     precio: 50000,
@@ -361,6 +385,7 @@ const PRODUCTOS = [
   },
   {
     id: "038",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Cuero Ecológico con Piel",
     categoria: "camperas",
     precio: 70000,
@@ -376,6 +401,7 @@ const PRODUCTOS = [
   },
   {
     id: "039",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera de Lana con Botones",
     categoria: "camperas",
     precio: 35000,
@@ -391,6 +417,7 @@ const PRODUCTOS = [
   },
   {
     id: "040",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Puffer",
     categoria: "camperas",
     precio: 75000,
@@ -406,6 +433,7 @@ const PRODUCTOS = [
   },
   {
     id: "041",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Abrigo con Capucha",
     categoria: "camperas",
     precio: 55000,
@@ -421,6 +449,7 @@ const PRODUCTOS = [
   },
   {
     id: "042",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Cuero con Piel",
     categoria: "camperas",
     precio: 70000,
@@ -436,6 +465,7 @@ const PRODUCTOS = [
   },
   {
     id: "043",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Frisa con Piel",
     categoria: "camperas",
     precio: 50000,
@@ -451,6 +481,7 @@ const PRODUCTOS = [
   },
   {
     id: "044",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera con Cierre Tramado",
     categoria: "camperas",
     precio: 35000,
@@ -466,6 +497,7 @@ const PRODUCTOS = [
   },
   {
     id: "045",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Chaleco Sin Mangas Impermeable",
     categoria: "camperas",
     precio: 50000,
@@ -481,6 +513,7 @@ const PRODUCTOS = [
   },
   {
     id: "046",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera de Lana Talle Super Especial",
     categoria: "camperas",
     precio: 45000,
@@ -496,6 +529,7 @@ const PRODUCTOS = [
   },
   {
     id: "047",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Lana de Hilo Varios Tonos",
     categoria: "camperas",
     precio: 35000,
@@ -511,6 +545,7 @@ const PRODUCTOS = [
   },
   {
     id: "048",
+    fechaCreacion: "2026-06-09",
     nombre: "Buzo Canguro Frisado Pecho y Espalda",
     categoria: "buzos",
     precio: 50000,
@@ -526,6 +561,7 @@ const PRODUCTOS = [
   },
   {
     id: "049",
+    fechaCreacion: "2026-06-09",
     nombre: "Buzo Frisado Medio Cierre",
     categoria: "buzos",
     precio: 45000,
@@ -541,6 +577,7 @@ const PRODUCTOS = [
   },
   {
     id: "050",
+    fechaCreacion: "2026-06-09",
     nombre: "Buzo Polar Medio Cierre Talle Especial",
     categoria: "buzos",
     precio: 60000,
@@ -556,6 +593,7 @@ const PRODUCTOS = [
   },
   {
     id: "051",
+    fechaCreacion: "2026-06-09",
     nombre: "Buzo Frisa Cuello Redondo",
     categoria: "buzos",
     precio: 45000,
@@ -571,6 +609,7 @@ const PRODUCTOS = [
   },
   {
     id: "052",
+    fechaCreacion: "2026-06-09",
     nombre: "Buzo Frisa Cuello Redondo Talle Especial",
     categoria: "buzos",
     precio: 50000,
@@ -586,6 +625,7 @@ const PRODUCTOS = [
   },
   {
     id: "053",
+    fechaCreacion: "2026-06-09",
     nombre: "Buzo Canguro Talle Especial",
     categoria: "buzos",
     precio: 60000,
@@ -601,6 +641,7 @@ const PRODUCTOS = [
   },
   {
     id: "054",
+    fechaCreacion: "2026-06-09",
     nombre: "Buzo Polar Medio Cierre Varios Tonos",
     categoria: "buzos",
     precio: 45000,
@@ -616,6 +657,7 @@ const PRODUCTOS = [
   },
   {
     id: "055",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Polar Talle Especial",
     categoria: "buzos",
     precio: 60000,
@@ -631,6 +673,7 @@ const PRODUCTOS = [
   },
   {
     id: "056",
+    fechaCreacion: "2026-06-09",
     nombre: "Chaleco Vestir",
     categoria: "accesorios",
     precio: 40000,
@@ -646,6 +689,7 @@ const PRODUCTOS = [
   },
   {
     id: "057",
+    fechaCreacion: "2026-06-09",
     nombre: "Corbatas y Corbatines Vestir",
     categoria: "accesorios",
     precio: 10000,
@@ -661,6 +705,7 @@ const PRODUCTOS = [
   },
   {
     id: "058",
+    fechaCreacion: "2026-06-09",
     nombre: "Moños Vestir",
     categoria: "accesorios",
     precio: 9000,
@@ -676,6 +721,7 @@ const PRODUCTOS = [
   },
   {
     id: "059",
+    fechaCreacion: "2026-06-09",
     nombre: "Tiradores Varios Tonos",
     categoria: "accesorios",
     precio: 10000,
@@ -691,6 +737,7 @@ const PRODUCTOS = [
   },
   {
     id: "060",
+    fechaCreacion: "2026-06-09",
     nombre: "Travacorbatas",
     categoria: "accesorios",
     precio: 13000,
@@ -706,6 +753,7 @@ const PRODUCTOS = [
   },
   {
     id: "061",
+    fechaCreacion: "2026-06-09",
     nombre: "Camperón Forrado con Piel",
     categoria: "camperas",
     precio: 70000,
@@ -722,6 +770,7 @@ const PRODUCTOS = [
 ,
   {
     id: "062",
+    fechaCreacion: "2026-06-09",
     nombre: "Campera Frisa con Piel",
     categoria: "buzos",
     precio: 50000,
@@ -769,3 +818,12 @@ function getRelated(p, n) {
   return related;
 }
 
+
+function isNew(product) {
+  if (product.badge === "nuevo" || product.badge === "oferta") return true;
+  if (!product.fechaCreacion) return false;
+  const createdDate = new Date(product.fechaCreacion);
+  const today = new Date();
+  const daysOld = (today - createdDate) / (1000 * 60 * 60 * 24);
+  return daysOld <= 30;
+}

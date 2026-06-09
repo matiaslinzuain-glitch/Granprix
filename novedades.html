@@ -174,7 +174,7 @@
     }
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    const BASE = PRODUCTOS.filter(p => p.badge === "nuevo" || p.badge === "oferta");
+    const BASE = PRODUCTOS.filter(p => isNew(p));
     let activeCat = "todo";
     let activeSort = "default";
     let searchTerm = "";
