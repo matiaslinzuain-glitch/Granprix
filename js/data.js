@@ -744,8 +744,28 @@ function formatPrice(n) {
 function getProductById(id) {
   return PRODUCTOS.find(p => p.id === id);
 }
-function getRelated(id, n) {
-  const p = getProductById(id);
+function getRelated(p, n) {
   if (!p) return [];
-  return PRODUCTOS.filter(x => x.id !== id && x.categoria === p.categoria).slice(0, n || 4);
+  n = n || 6;
+
+  // Primero, productos de la misma categoría
+  const sameCat = PRODUCTOS.filter(x => x.id !== p.id && x.categoria === p.categoria);
+
+  // Ordenar por similitud de precio
+  sameCat.sort((a, b) => {
+    const diffA = Math.abs(a.precio - p.precio);
+    const diffB = Math.abs(b.precio - p.precio);
+    return diffA - diffB;
+  });
+
+  // Si no hay suficientes en la misma categoría, agregar de otras
+  let related = sameCat.slice(0, n);
+  if (related.length < n) {
+    const otherCat = PRODUCTOS.filter(x => x.id !== p.id && x.categoria !== p.categoria);
+    otherCat.sort((a, b) => Math.abs(a.precio - p.precio) - Math.abs(b.precio - p.precio));
+    related = related.concat(otherCat.slice(0, n - related.length));
+  }
+
+  return related;
 }
+
