@@ -117,7 +117,7 @@ input, select { font-family: inherit; }
   border-bottom: 1px solid transparent;
 }
 .navbar.scrolled {
-  background: rgba(255,255,255,0.95);
+  background: rgba(255,255,255,1);
   backdrop-filter: blur(10px);
   border-color: var(--border);
 }
@@ -395,7 +395,7 @@ input, select { font-family: inherit; }
   background: none;
 }
 .filter-btn:hover { border-color: var(--gold); color: var(--white); }
-.filter-btn.active { background: var(--gold); color: #ffffff; border-color: var(--gold); box-shadow: 0 4px 16px rgba(212,168,83,0.25); }
+.filter-btn.active { background: var(--gold); color: #1a1a1a; border-color: var(--gold); box-shadow: 0 4px 16px rgba(212,168,83,0.25); }
 .sort-select {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -418,7 +418,7 @@ input, select { font-family: inherit; }
   position: relative;
   cursor: pointer;
 }
-.product-card:hover { background: #161616; box-shadow: 0 8px 30px rgba(212,168,83,0.12); }
+.product-card:hover { background: #ffffff; box-shadow: 0 8px 30px rgba(212,168,83,0.12); }
 .product-card-img {
   position: relative;
   aspect-ratio: 3/4;
@@ -664,7 +664,7 @@ input, select { font-family: inherit; }
   transition: border-color 0.2s, background 0.2s, color 0.2s;
 }
 .talle-btn:hover { border-color: var(--gold); color: var(--white); }
-.talle-btn.selected { background: var(--gold); color: #ffffff; border-color: var(--gold); }
+.talle-btn.selected { background: var(--gold); color: #1a1a1a; border-color: var(--gold); }
 .talle-btn:disabled { opacity: 0.5; cursor: not-allowed; color: var(--gray); }
 .talle-btn:disabled:hover { border-color: var(--border); }
 .colores-section { margin-bottom: 2rem; }
