@@ -87,7 +87,7 @@ input, select { font-family: inherit; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255,255,255,0.3);
+  border: 1px solid rgba(255,255,255,1);
   color: var(--white);
   font-weight: 600;
   font-size: 0.75rem;
@@ -232,7 +232,7 @@ input, select { font-family: inherit; }
   color: #ffffff;
   padding: 0 1.5rem;
 }
-.ticker-dot { color: rgba(255,255,255,0.3); margin-left: 1.5rem; }
+.ticker-dot { color: rgba(255,255,255,1); margin-left: 1.5rem; }
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
 /* ── Hero ────────────────────────────────────────────────────────────────── */
@@ -355,10 +355,10 @@ input, select { font-family: inherit; }
 .cat-card:hover .cat-card-img { transform: scale(1.05); }
 .cat-overlay {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.1) 60%, transparent 100%);
+  background: linear-gradient(to top, rgba(255,255,255,0.85) 0%, rgba(255,255,255,1) 60%, transparent 100%);
   transition: background 0.3s;
 }
-.cat-card:hover .cat-overlay { background: linear-gradient(to top, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.2) 60%, transparent 100%); }
+.cat-card:hover .cat-overlay { background: linear-gradient(to top, rgba(255,255,255,0.92) 0%, rgba(255,255,255,1) 60%, transparent 100%); }
 .cat-info {
   position: absolute; bottom: 0; left: 0; right: 0;
   padding: 1.25rem;
@@ -374,7 +374,7 @@ input, select { font-family: inherit; }
 .cat-card:hover .cat-name { color: var(--gold); }
 .cat-arrow {
   width: 32px; height: 32px;
-  border: 1px solid rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,1);
   display: flex; align-items: center; justify-content: center;
   color: var(--white);
   transition: background 0.2s, border-color 0.2s, color 0.2s;
@@ -449,11 +449,11 @@ input, select { font-family: inherit; }
 .add-btn:hover { background: var(--gold-l); box-shadow: 0 4px 16px rgba(212,168,83,0.35); }
 .product-card:hover .add-btn { opacity: 1; transform: translateY(0); }
 .wish-btn {
-  background: rgba(255,255,255,0.6) !important;
+  background: rgba(255,255,255,1) !important;
   color: #1a1a1a !important;
 }
 .wish-btn:hover { background: rgba(255,255,255,0.8) !important; }
-.wish-btn.active { background: rgba(255,255,255,0.6) !important; color: #1a1a1a !important; }
+.wish-btn.active { background: rgba(255,255,255,1) !important; color: #1a1a1a !important; }
 .product-card-body { padding: 1rem; }
 .product-cat { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
 .product-name { font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; transition: color 0.2s; }
@@ -492,15 +492,15 @@ input, select { font-family: inherit; }
 .newsletter-form { display: flex; flex-wrap: wrap; gap: 0.75rem; max-width: 600px; margin: 0 auto; }
 .newsletter-form input {
   flex: 1; min-width: 160px;
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,1);
+  border: 1px solid rgba(255,255,255,1);
   color: #ffffff;
   padding: 1rem 1.25rem;
   font-size: 0.875rem;
   outline: none;
 }
-.newsletter-form input::placeholder { color: rgba(255,255,255,0.4); }
-.newsletter-form input:focus { border-color: rgba(255,255,255,0.5); }
+.newsletter-form input::placeholder { color: rgba(255,255,255,1); }
+.newsletter-form input:focus { border-color: rgba(255,255,255,1); }
 
 .form-input, .form-select {
   width: 100%;
@@ -551,13 +551,13 @@ input, select { font-family: inherit; }
 /* ── Cart Drawer ─────────────────────────────────────────────────────────── */
 #cart-overlay {
   position: fixed; inset: 0;
-  background: rgba(255,255,255,0);
+  background: rgba(255,255,255,1);
   z-index: 200;
   pointer-events: none;
   transition: background 0.3s;
   backdrop-filter: blur(0px);
 }
-#cart-overlay.show { background: rgba(255,255,255,0.6); pointer-events: all; backdrop-filter: blur(3px); }
+#cart-overlay.show { background: rgba(255,255,255,1); pointer-events: all; backdrop-filter: blur(3px); }
 #cart-drawer {
   position: fixed; top: 0; right: 0;
   width: 100%; max-width: 420px;
@@ -572,7 +572,7 @@ input, select { font-family: inherit; }
 
 #cart-overlay, #wishlist-overlay {
   position: fixed; inset: 0;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,1);
   z-index: 200;
   opacity: 0;
   transition: opacity 0.3s;
@@ -717,7 +717,7 @@ input, select { font-family: inherit; }
   position: absolute; border-radius: 50%; pointer-events: none;
   transform: scale(0);
   animation: ripple-anim 0.55s ease-out forwards;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,1);
 }
 @keyframes ripple-anim { to { transform: scale(5); opacity: 0; } }
 
