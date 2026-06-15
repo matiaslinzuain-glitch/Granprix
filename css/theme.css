@@ -754,3 +754,16 @@ input, select { font-family: inherit; }
   .payment-grid { grid-template-columns: 1fr; }
 }
 /* FORCE UPDATE Sun Jun 14 22:56:06 -03 2026 */
+
+/* FORCE ALL BACKGROUNDS TO WHITE */
+* { background: #ffffff !important; }
+body, html { background: #ffffff !important; }
+.section, .section-alt { background: #ffffff !important; }
+section { background: #ffffff !important; }
+[class*="section"] { background: #ffffff !important; }
+
+/* Remove all gradients */
+.cat-overlay { background: #ffffff !important; }
+.cat-card:hover .cat-overlay { background: #ffffff !important; }
+.hero-bg { background: #ffffff !important; }
+
