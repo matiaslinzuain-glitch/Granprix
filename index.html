@@ -470,11 +470,11 @@ input, select { font-family: inherit; }
   position: absolute;
   bottom: 0.75rem; right: 0.75rem;
   width: 40px; height: 40px;
-  background: var(--gold);
-  color: #000;
+  background: var(--gold) !important;
+  color: #000 !important;
   display: flex; align-items: center; justify-content: center;
-  opacity: 0;
-  transform: translateY(6px);
+  opacity: 1 !important;
+  transform: translateY(0) !important;
   transition: opacity 0.2s, transform 0.2s, background 0.2s;
 }
 .add-btn:hover { background: var(--gold-l); box-shadow: 0 4px 16px rgba(212,168,83,0.35); }
