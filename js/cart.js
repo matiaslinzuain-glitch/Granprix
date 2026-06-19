@@ -79,11 +79,7 @@ const Cart = {
     body.innerHTML = items.map(item => `
       <div class="cart-item">
         <div class="cart-item-img">
-          <div class="placeholder-img small">
-            <svg width="28" height="28" fill="none" stroke="#333" stroke-width="1" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6v14h12V6M3 6l3-3 3 3M18 6l3-3-3-3"/>
-            </svg>
-          </div>
+          ${item.imagen ? `<img src="${item.imagen}" alt="${item.nombre}" style="width:100%;height:100%;object-fit:cover;display:block;">` : `<div class="placeholder-img small"><svg width="28" height="28" fill="none" stroke="#333" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 6v14h12V6M3 6l3-3 3 3M18 6l3-3-3-3"/></svg></div>`}
         </div>
         <div class="cart-item-info">
           <p class="cart-item-name">${item.nombre}</p>
