@@ -65,6 +65,15 @@ const Wishlist = {
       badge.style.display = count > 0 ? "flex" : "none";
     }
 
+    // Actualizar botones de favorito en la grilla
+    document.querySelectorAll(".wish-btn").forEach(btn => {
+      const id = btn.getAttribute("data-id");
+      if (id) {
+        if (this.isFavorite(id)) btn.classList.add("active");
+        else btn.classList.remove("active");
+      }
+    });
+
     // Drawer
     const body = document.getElementById("wishlist-body");
     if (!body) return;
