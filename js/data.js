@@ -608,7 +608,7 @@ const PRODUCTOS = [
     badge: "nuevo",
     imagen: "img/travacorbata-1.jpeg",
     galeria: [],
-    descripcion: "Travacorbatas de vestir en varios colores y diseños."
+    descripcion: "Trabacorbatas de vestir en varios colores y diseños."
   },
   {
     id: "061",
