@@ -19,7 +19,7 @@ const Cart = {
     if (idx >= 0) {
       items[idx].cantidad++;
     } else {
-      items.push({ id: product.id, nombre: product.nombre, precio: product.precio, talle, cantidad: 1 });
+      items.push({ id: product.id, nombre: product.nombre, precio: product.precio, imagen: product.imagen || null, talle, cantidad: 1 });
     }
     this.save(items);
     this.open();
@@ -27,6 +27,18 @@ const Cart = {
 
   remove(id, talle) {
     this.save(this.items.filter(i => !(i.id === id && i.talle === talle)));
+  },
+
+  decrease(id, talle) {
+    const items = this.items;
+    const idx = items.findIndex(i => i.id === id && i.talle === talle);
+    if (idx < 0) return;
+    if (items[idx].cantidad > 1) {
+      items[idx].cantidad--;
+      this.save(items);
+    } else {
+      this.remove(id, talle);
+    }
   },
 
   get total() {
@@ -83,14 +95,15 @@ const Cart = {
         </div>
         <div class="cart-item-info">
           <p class="cart-item-name">${item.nombre}</p>
-          <p class="cart-item-meta">Talle: ${item.talle} · Cant: ${item.cantidad}</p>
+          <p class="cart-item-meta">Talle: ${item.talle}</p>
           <p class="cart-item-price">${formatPrice(item.precio * item.cantidad)}</p>
+          <div style="display:flex;align-items:center;gap:0.5rem;margin-top:0.4rem;">
+            <button onclick="Cart.decrease('${item.id}','${item.talle}')" style="width:26px;height:26px;border:1px solid #d4a853;background:none;color:#d4a853;font-size:1rem;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;">−</button>
+            <span style="font-size:0.875rem;font-weight:600;min-width:20px;text-align:center;">${item.cantidad}</span>
+            <button onclick="Cart.add(PRODUCTOS.find(x=>x.id==='${item.id}'),'${item.talle}')" style="width:26px;height:26px;border:1px solid #d4a853;background:none;color:#d4a853;font-size:1rem;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;">+</button>
+            <button onclick="Cart.remove('${item.id}','${item.talle}')" style="margin-left:0.5rem;background:none;border:none;color:#999;cursor:pointer;font-size:0.75rem;text-decoration:underline;">Eliminar</button>
+          </div>
         </div>
-        <button class="cart-item-remove" onclick="Cart.remove('${item.id}','${item.talle}')">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-        </button>
       </div>`).join("");
 
     if (footer) {
