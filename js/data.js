@@ -738,7 +738,7 @@ const PRODUCTOS = [
   {
     id: "060",
     fechaCreacion: "2026-06-09",
-    nombre: "Travacorbatas",
+    nombre: "Trabacorbatas",
     categoria: "accesorios",
     precio: 13000,
     precioAnterior: null,
@@ -747,7 +747,7 @@ const PRODUCTOS = [
     badge: "nuevo",
     imagen: "img/travacorbata-1.jpeg",
     galeria: [],
-    descripcion: "Travacorbatas de vestir en varios colores y diseños."
+    descripcion: "Trabacorbatas de vestir en varios colores y diseños."
   ,
     stockAgotado: []
   },

@@ -323,6 +323,9 @@ loadCategoryDataOnStart();
       <div class="card-title">Productos en el sitio</div>
       <span id="prod-count" style="font-size:.8rem;color:var(--gray)"></span>
     </div>
+    <div style="padding:1rem;border-bottom:1px solid var(--border)">
+      <input id="prod-search" type="text" class="form-input" placeholder="🔍 Buscar producto por nombre..." onkeyup="filterProducts(this.value)" />
+    </div>
     <div id="prod-list"><div class="empty-st">Cargando…</div></div>
   </div>
 
@@ -347,6 +350,7 @@ let editingId      = null;
 let selGallery     = [];   // nuevas fotos de galería a subir [{name,rawBase64,dataUrl}]
 let existingGallery = [];  // paths de galería ya publicados (cuando edita)
 let removedGallery  = new Set(); // paths a eliminar de galería existente
+let allProducts    = []; // todos los productos para filtrado
 
 window.addEventListener("DOMContentLoaded", async () => {
   bindTalleInput();
@@ -446,25 +450,33 @@ async function loadProducts() {
   wrap.innerHTML='<div class="empty-st">Cargando…</div>';
   try {
     const src=await rawRead(REPOS[0],"js/data.js");
-    const prods=parseProducts(src);
-    cnt.textContent=`${prods.length} productos`;
-    wrap.innerHTML=prods.length ? prods.map(p=>`
-      <div class="prod-row">
-        ${p.imagen?`<img class="prod-thumb" src="${p.imagen}" loading="lazy" onerror="this.style.visibility='hidden'">`:
-          `<div class="prod-thumb"></div>`}
-        <div class="prod-info">
-          <div class="prod-name">${p.nombre}</div>
-          <div class="prod-meta">${p.categoria} · ${p.talles.slice(0,4).join(", ")}${p.talles.length>4?"…":""}</div>
-        </div>
-        <div class="prod-price">$${p.precio.toLocaleString("es-AR")}</div>
-        <div class="prod-actions">
-          <button class="btn btn-outline btn-sm" onclick="editarProducto('${p.id}')">✏️ Editar</button>
-          <button class="btn btn-danger btn-sm" onclick="eliminarProducto('${p.id}','${esc(p.nombre)}')">🗑</button>
-        </div>
-      </div>`).join("") : '<div class="empty-st">No hay productos.</div>';
+    allProducts=parseProducts(src);
+    cnt.textContent=`${allProducts.length} productos`;
+    filterProducts("");
   } catch(e) {
     wrap.innerHTML=`<div class="empty-st" style="color:var(--red)">Error: ${e.message}</div>`;
   }
+}
+
+function filterProducts(query) {
+  const wrap=document.getElementById("prod-list");
+  const q=query.toLowerCase().trim();
+  const filtered=q ? allProducts.filter(p=>p.nombre.toLowerCase().includes(q) || p.categoria.toLowerCase().includes(q) || p.id.includes(q)) : allProducts;
+
+  wrap.innerHTML=filtered.length ? filtered.map(p=>`
+    <div class="prod-row">
+      ${p.imagen?`<img class="prod-thumb" src="${p.imagen}" loading="lazy" onerror="this.style.visibility='hidden'">`:
+        `<div class="prod-thumb"></div>`}
+      <div class="prod-info">
+        <div class="prod-name">${p.nombre}</div>
+        <div class="prod-meta">${p.categoria} · ${p.talles.slice(0,4).join(", ")}${p.talles.length>4?"…":""}</div>
+      </div>
+      <div class="prod-price">$${p.precio.toLocaleString("es-AR")}</div>
+      <div class="prod-actions">
+        <button class="btn btn-outline btn-sm" onclick="editarProducto('${p.id}')">✏️ Editar</button>
+        <button class="btn btn-danger btn-sm" onclick="eliminarProducto('${p.id}','${esc(p.nombre)}')">🗑</button>
+      </div>
+    </div>`).join("") : `<div class="empty-st">${q ? "No hay resultados" : "No hay productos."}</div>`;
 }
 
 // ══ Guardar ══
