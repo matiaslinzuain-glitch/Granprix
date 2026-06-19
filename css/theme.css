@@ -753,17 +753,7 @@ input, select { font-family: inherit; }
   .pickup-features { grid-template-columns: 1fr; }
   .payment-grid { grid-template-columns: 1fr; }
 }
-/* FORCE UPDATE Sun Jun 14 22:56:06 -03 2026 */
-
-/* FORCE ALL BACKGROUNDS TO WHITE */
-* { background: #f5f5f5 !important; }
-body, html { background: #f5f5f5 !important; }
-.section, .section-alt { background: #f5f5f5 !important; }
-section { background: #f5f5f5 !important; }
-[class*="section"] { background: #f5f5f5 !important; }
-
-/* Remove all gradients */
-.cat-overlay { background: #f5f5f5 !important; }
-.cat-card:hover .cat-overlay { background: #f5f5f5 !important; }
-.hero-bg { background: #f5f5f5 !important; }
+body, html { background: #ffffff; }
+.section, .section-alt { background: #ffffff; }
+section { background: #ffffff; }
 
