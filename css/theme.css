@@ -449,11 +449,11 @@ input, select { font-family: inherit; }
 .add-btn:hover { background: var(--gold-l); box-shadow: 0 4px 16px rgba(212,168,83,0.35); }
 .product-card:hover .add-btn { opacity: 1; transform: translateY(0); }
 .wish-btn {
-  background: rgba(255,255,255,1) !important;
-  color: #1a1a1a !important;
+  background: var(--gold) !important;
+  color: #ffffff !important;
 }
-.wish-btn:hover { background: rgba(255,255,255,0.8) !important; }
-.wish-btn.active { background: rgba(255,255,255,1) !important; color: #1a1a1a !important; }
+.wish-btn:hover { background: var(--gold-l) !important; }
+.wish-btn.active { background: var(--gold) !important; color: #ffffff !important; }
 .product-card-body { padding: 1rem; }
 .product-cat { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
 .product-name { font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; transition: color 0.2s; }
