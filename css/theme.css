@@ -449,10 +449,10 @@ input, select { font-family: inherit; }
 .add-btn:hover { background: var(--gold-l); box-shadow: 0 4px 16px rgba(212,168,83,0.35); }
 .product-card:hover .add-btn { opacity: 1; transform: translateY(0); }
 .wish-btn {
-  background: rgba(0,0,0,0.15) !important;
-  color: #ffffff !important;
+  background: rgba(0,0,0,0.2) !important;
+  color: rgba(255,255,255,0.7) !important;
 }
-.wish-btn:hover { background: var(--gold) !important; }
+.wish-btn:hover { background: var(--gold) !important; color: #ffffff !important; }
 .wish-btn.active { background: var(--gold) !important; color: #ffffff !important; }
 .product-card-body { padding: 1rem; }
 .product-cat { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 0.3rem; }
